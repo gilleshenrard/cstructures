@@ -13,6 +13,7 @@ LDFLAGS:= -Wl,--disable-new-dtags -Wl,-rpath,\$$ORIGIN/../lib
 #executables compilation
 test_algo: balgo bdata
 	@ echo "Builing $@"
+	@ mkdir -p $(cbin)
 	@ $(CC) $(CFLAGS) -L$(clib) $(LDFLAGS) -o $(cbin)/$@ $@.c $(LFLAGS)
 
 
