@@ -25,7 +25,7 @@
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so
-*.so.*
+*.so*
 *.dylib
 
 # Executables
@@ -35,6 +35,8 @@
 *.i*86
 *.x86_64
 *.hex
+client
+server
 
 # Debug files
 *.dSYM/
@@ -50,3 +52,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# code::blocks files
+bin/
+bin
+*.cbp
+*.depend
+*.layout
+
+# test files
+data/
