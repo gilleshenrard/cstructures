@@ -272,7 +272,7 @@ int tst_inserttoplist()
     while(lis.structure)
     {
         foreachList(&lis, NULL, Print_dataset);
-        printf("Nb of elements: %" PRIu64 "\n", lis.nbelements);
+        printf("Nb of elements: %lu\n", (unsigned long int)lis.nbelements);
         printf("----------------------------------------------------------\n");
         printf("Data with list head purged:\n");
         popListTop(&lis);
@@ -414,7 +414,7 @@ int tst_structuresconversion()
     }
     printf("List created:\n");
     foreachList(&lis, NULL, Print_dataset);
-    printf("array pointer: %p, number of elments: %" PRIu64 "\n", arr.structure, arr.nbelements);
+    printf("array pointer: %p, number of elments: %lu\n", arr.structure, (unsigned long int)arr.nbelements);
     printf("----------------------------------------------------------\n");
 
     //convert the array to a list and display it
@@ -427,7 +427,7 @@ int tst_structuresconversion()
     }
     printf("Array created:\n");
     foreachArray(&arr, NULL, Print_dataset);
-    printf("list pointer: %p, number of elments: %" PRIu64 "\n", lis.structure, lis.nbelements);
+    printf("list pointer: %p, number of elments: %lu\n", lis.structure, (unsigned long int)lis.nbelements);
 
     free(arr.structure);
 
@@ -499,7 +499,7 @@ int tst_removeavl()
     {
         delete_AVL_root(&avl);
         display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
-        printf("nb of elements remaining: %" PRIu64 "\n", avl.nbelements);
+        printf("nb of elements remaining: %lu\n", (unsigned long int)avl.nbelements);
         printf("----------------------------------------------------------\n");
     }
 
@@ -535,7 +535,7 @@ int tst_searchavl()
     printf("----------------------------------------------------------\n");
 
     foreachAVL(&avl, avl.structure, NULL, Print_dataset);
-    printf("Nb of elements: %" PRIu64 "\n", avl.nbelements);
+    printf("Nb of elements: %lu\n", (unsigned long int)avl.nbelements);
     tmp = search_AVL(&avl, avl.structure, get_arrayelem(&arr, 5));
     if(!tmp)
         printf("Element %s not found\n", toString_dataset(get_arrayelem(&arr, 5)));
