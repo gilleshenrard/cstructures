@@ -375,7 +375,7 @@ int bubbleSortList(meta_t* meta, uint64_t nb){
 /************************************************************/
 /*  WARNING : is solely to be used by the quick sort func.! */
 /************************************************************/
-int quickSortPartitioning(meta_t* meta, long low, long high){
+int quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
     void* pivot = get_arrayelem(meta, high), *elem_i=NULL, *elem_j=NULL, *tmp = NULL;
     int i = low-1;
 
@@ -391,7 +391,7 @@ int quickSortPartitioning(meta_t* meta, long low, long high){
 
     //swap the elements until the pivot is at the right place
     //      with lower elements before, and higher ones after
-    for(int j=low ; j<=high-1 ; j++){
+    for(uint64_t j=low ; j<=high-1 ; j++){
         elem_j = get_arrayelem(meta, j);
         if((*meta->doCompare)(elem_j, pivot) <= 0){
             i++;
