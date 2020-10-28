@@ -428,7 +428,7 @@ uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high){
 /*      -1 -> Error                                         */
 /************************************************************/
 int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
-    uint32_t pivot=0;
+    uint32_t pivot=0, diffLow = 0, diffHigh = 0;
 
     //no meta data available
     if(!meta || !meta->doCompare)
@@ -443,8 +443,12 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
     if(!meta->structure)
         return 0;
 
-    //if current partition not yet entirely sorted (and low and high are not supposed negative)
-    if(low < high && low < meta->nbelements && high < meta->nbelements){
+    //as low and high are unsigned, calculate their distance to meta->nbelements
+    diffLow = (low > meta->nbelements ? (UINT32_MAX - low) + meta->nbelements : meta->nbelements - low);
+    diffHigh = (high > meta->nbelements ? (UINT32_MAX - high) + meta->nbelements : meta->nbelements - high);
+
+    //if current partition not yet entirely sorted
+    if(diffLow > diffHigh){
         //place the pivot at its right place
         pivot = quickSortPartitioning(meta, low, high);
 
