@@ -90,12 +90,12 @@ int swap_dyn(dyndata_t* a, dyndata_t* b)
 /*  O : NULL if error                                       */
 /*      Address of the element otherwise                    */
 /************************************************************/
-void* get_arrayelem(meta_t* meta, int i)
+void* get_arrayelem(meta_t* meta, uint64_t i)
 {
-    if(i >= meta->nbelements || i < 0)
+    if(i >= meta->nbelements)
     {
         if(meta->doPError)
-            (*meta->doPError)("get_arrayelem: no element at the index %d", i);
+            (*meta->doPError)("get_arrayelem: no element at the index %" PRIu64 "\n", i);
 
         return NULL;
     }
@@ -112,12 +112,12 @@ void* get_arrayelem(meta_t* meta, int i)
 /*  O : -1 if error                                         */
 /*      0 otherwise                                         */
 /************************************************************/
-int set_arrayelem(meta_t* meta, int i, void* elem)
+int set_arrayelem(meta_t* meta, uint64_t i, void* elem)
 {
-    if(i >= meta->nbelements || i < 0)
+    if(i >= meta->nbelements)
     {
         if(meta->doPError)
-            (*meta->doPError)("set_arrayelem: index %d out of range", i);
+            (*meta->doPError)("set_arrayelem: index %" PRIu64 " out of range\n", i);
 
         return -1;
     }
@@ -162,7 +162,7 @@ int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action){
 
     //copy elements one by one in the array
     tmp_list = dList->structure;
-    for(int i=0 ; i<dArray->nbelements ; i++){
+    for(uint64_t i=0 ; i<dArray->nbelements ; i++){
         //position the pointer properly
         tmp_array = get_arrayelem(dArray, i);
         memcpy(tmp_array, tmp_list->data, dList->elementsize);
@@ -198,7 +198,7 @@ int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action){
 /************************************************************/
 int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action){
     //copy elements one by one in the list
-    for(int i=0 ; i<dArray->nbelements ; i++)
+    for(uint64_t i=0 ; i<dArray->nbelements ; i++)
     {
         //insert in the list
         if(insertListSorted(dList,  get_arrayelem(dArray, i)) < 0)
@@ -234,7 +234,7 @@ int arrayToAVL(meta_t* dArray, meta_t* dAVL, e_listtoarray action){
     dyndata_t* tmp_array = dArray->structure;
 
     //copy elements one by one in the list
-    for(int i=0 ; i<dArray->nbelements ; i++){
+    for(uint64_t i=0 ; i<dArray->nbelements ; i++){
         tmp_array = get_arrayelem(dArray, i);
         //insert in the AVL
         dAVL->structure = insertAVL(dAVL, dAVL->structure, tmp_array);
@@ -258,7 +258,7 @@ int arrayToAVL(meta_t* dArray, meta_t* dAVL, e_listtoarray action){
 /*  O :  0 -> Sorted                                        */
 /*      -1 -> Error                                         */
 /************************************************************/
-int bubbleSortArray(meta_t *meta, int nb){
+int bubbleSortArray(meta_t *meta, uint64_t nb){
     void *current=NULL, *next=NULL;
     void* tmp = NULL;
 
@@ -285,8 +285,8 @@ int bubbleSortArray(meta_t *meta, int nb){
         return -1;
     }
 
-    for(int i=0 ; i<nb ; i++){
-        for(int j=0 ; j<meta->nbelements-i-1 ; j++){
+    for(uint64_t i=0 ; i<nb ; i++){
+        for(uint64_t j=0 ; j<meta->nbelements-i-1 ; j++){
             //properly place the cursors
             current = get_arrayelem(meta, j);
             next = get_arrayelem(meta, j+1);
@@ -313,9 +313,10 @@ int bubbleSortArray(meta_t *meta, int nb){
 /*  O :  0 -> Sorted                                        */
 /*      -1 -> Error                                         */
 /************************************************************/
-int bubbleSortList(meta_t* meta, int nb){
+int bubbleSortList(meta_t* meta, uint64_t nb){
     dyndata_t *current=NULL, *next=NULL, *right_ptr=NULL;
-    int swapped, count = 0;
+    int swapped = 0;
+    uint64_t count = 0;
 
     //no meta data available
     if(!meta || !meta->doCompare)
@@ -503,12 +504,12 @@ int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
 /*  O : Element if found                                    */
 /*      NULL otherwise                                      */
 /************************************************************/
-void* get_listelem(meta_t* meta, int i)
+void* get_listelem(meta_t* meta, uint64_t i)
 {
     dyndata_t *tmp = meta->structure, *next = NULL;
-    int index = 0;
+    uint64_t index = 0;
 
-    if(i<0 || i>=meta->nbelements)
+    if(i>=meta->nbelements)
     {
         if(meta->doPError)
             (*meta->doPError)("get_listelem: no element at index %d", i);
@@ -815,7 +816,7 @@ int foreachList(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
 int foreachArray(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     void* tmp = NULL;
 
-    for(int i=0 ; i<meta->nbelements ; i++){
+    for(uint64_t i=0 ; i<meta->nbelements ; i++){
         //position the pointer properly
         tmp = get_arrayelem(meta, i);
         //execute action

@@ -80,7 +80,7 @@ int setup_data(dataset_t** data, long nb)
 /************************************************************/
 int tst_bubblesortarray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/******************************************************************/\n");
     printf("/********************* tst_bubblesortarray ************************/\n");
@@ -134,7 +134,7 @@ int tst_bubblesortarray()
 /************************************************************/
 int tst_quicksortarray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/******************************************************************/\n");
     printf("/********************* tst_quicksortarray *************************/\n");
@@ -176,7 +176,7 @@ int tst_quicksortarray()
 /************************************************************/
 int tst_binarysearcharray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
     dataset_t* tmp = NULL;
     int found=0;
 
@@ -233,8 +233,8 @@ int tst_binarysearcharray()
 /************************************************************/
 int tst_inserttoplist()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_inserttoplist *****************************/\n");
@@ -269,7 +269,7 @@ int tst_inserttoplist()
     while(lis.structure)
     {
         foreachList(&lis, NULL, Print_dataset);
-        printf("Nb of elements: %ld\n", lis.nbelements);
+        printf("Nb of elements: %" PRIu64 "\n", lis.nbelements);
         printf("----------------------------------------------------------\n");
         printf("Data with list head purged:\n");
         popListTop(&lis);
@@ -287,8 +287,8 @@ int tst_inserttoplist()
 /************************************************************/
 int tst_insertlistsorted()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_insertlistsorted **************************/\n");
@@ -329,8 +329,8 @@ int tst_insertlistsorted()
 /************************************************************/
 int tst_bubblesortlist()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_bubblesortlist ****************************/\n");
@@ -383,8 +383,8 @@ int tst_bubblesortlist()
 /************************************************************/
 int tst_structuresconversion()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_structuresconversion **********************/\n");
@@ -411,7 +411,7 @@ int tst_structuresconversion()
     }
     printf("List created:\n");
     foreachList(&lis, NULL, Print_dataset);
-    printf("array pointer: %p, number of elments: %ld\n", arr.structure, arr.nbelements);
+    printf("array pointer: %p, number of elments: %" PRIu64 "\n", arr.structure, arr.nbelements);
     printf("----------------------------------------------------------\n");
 
     //convert the array to a list and display it
@@ -424,7 +424,7 @@ int tst_structuresconversion()
     }
     printf("Array created:\n");
     foreachArray(&arr, NULL, Print_dataset);
-    printf("list pointer: %p, number of elments: %ld\n", lis.structure, lis.nbelements);
+    printf("list pointer: %p, number of elments: %" PRIu64 "\n", lis.structure, lis.nbelements);
 
     free(arr.structure);
 
@@ -439,8 +439,8 @@ int tst_structuresconversion()
 /************************************************************/
 int tst_insertavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/*************************** tst_insertavl ***************************/\n");
@@ -474,8 +474,8 @@ int tst_insertavl()
 /************************************************************/
 int tst_removeavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/*************************** tst_removeavl ***************************/\n");
@@ -496,7 +496,7 @@ int tst_removeavl()
     {
         delete_AVL_root(&avl);
         display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
-        printf("nb of elements remaining: %ld\n", avl.nbelements);
+        printf("nb of elements remaining: %" PRIu64 "\n", avl.nbelements);
         printf("----------------------------------------------------------\n");
     }
 
@@ -513,8 +513,8 @@ int tst_removeavl()
 /************************************************************/
 int tst_searchavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset};
+    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
     dataset_t *tmp = NULL;
 
     printf("/*********************************************************************/\n");
@@ -532,7 +532,7 @@ int tst_searchavl()
     printf("----------------------------------------------------------\n");
 
     foreachAVL(&avl, avl.structure, NULL, Print_dataset);
-    printf("Nb of elements: %ld\n", avl.nbelements);
+    printf("Nb of elements: %" PRIu64 "\n", avl.nbelements);
     tmp = search_AVL(&avl, avl.structure, get_arrayelem(&arr, 5));
     if(!tmp)
         printf("Element %s not found\n", toString_dataset(get_arrayelem(&arr, 5)));
