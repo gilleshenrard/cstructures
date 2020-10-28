@@ -25,6 +25,9 @@ int compare_dataset_int(void* a, void* b)
         return 0;
 }
 
+#ifdef __GNUC__
+# pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 int Print_dataset(void* elem, void* nullable)
 {
     dataset_t* A=(dataset_t*)elem;
