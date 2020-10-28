@@ -375,9 +375,14 @@ int bubbleSortList(meta_t* meta, uint64_t nb){
 /************************************************************/
 /*  WARNING : is solely to be used by the quick sort func.! */
 /************************************************************/
-int quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
-    void* pivot = get_arrayelem(meta, high), *elem_i=NULL, *elem_j=NULL, *tmp = NULL;
-    int i = low-1;
+uint64_t quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
+    void* pivotElem = NULL, *elem_i=NULL, *elem_j=NULL, *tmp = NULL;
+    uint64_t i = 0;
+
+    //get the element at the highest index of the partition for the pivot
+    //      and place i below the lowest
+    pivotElem = get_arrayelem(meta, high);
+    i = low - 1;
 
     //allocate the size of a temporary element in order to allow swapping
     tmp = calloc(1, meta->elementsize);
@@ -393,7 +398,7 @@ int quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
     //      with lower elements before, and higher ones after
     for(uint64_t j=low ; j<=high-1 ; j++){
         elem_j = get_arrayelem(meta, j);
-        if((*meta->doCompare)(elem_j, pivot) <= 0){
+        if((*meta->doCompare)(elem_j, pivotElem) < 0){
             i++;
             elem_i = get_arrayelem(meta, i);
             memcpy(tmp, elem_i, meta->elementsize);
@@ -423,7 +428,7 @@ int quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
 /*      -1 -> Error                                         */
 /************************************************************/
 int quickSortArray(meta_t* meta, uint64_t low, uint64_t high){
-    int pivot=0;
+    uint64_t pivot=0;
 
     //no meta data available
     if(!meta || !meta->doCompare)
@@ -438,9 +443,12 @@ int quickSortArray(meta_t* meta, uint64_t low, uint64_t high){
     if(!meta->structure)
         return 0;
 
-    if(low < high){
+    //if current partition not yet entirely sorted (and low and high are not supposed negative)
+    if(low < high && low < meta->nbelements && high < meta->nbelements){
+        //place the pivot at its right place
         pivot = quickSortPartitioning(meta, low, high);
 
+        //sort the partition below pivot
         if(quickSortArray(meta, low, pivot-1) < 0)
         {
             if(meta->doPError)
@@ -448,7 +456,9 @@ int quickSortArray(meta_t* meta, uint64_t low, uint64_t high){
 
             return -1;
         }
-        if(quickSortArray(meta, pivot+1, high) <0)
+
+        //sort the partition above pivot
+        if(quickSortArray(meta, pivot+1, high) < 0)
         {
             if(meta->doPError)
                 (*meta->doPError)("quickSortArray: error while sorting the array above index %d", pivot+1);
