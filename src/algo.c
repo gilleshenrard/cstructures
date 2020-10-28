@@ -422,7 +422,7 @@ int quickSortPartitioning(meta_t* meta, uint64_t low, uint64_t high){
 /*  O :  0 -> Sorted                                        */
 /*      -1 -> Error                                         */
 /************************************************************/
-int quickSortArray(meta_t* meta, long low, long high){
+int quickSortArray(meta_t* meta, uint64_t low, uint64_t high){
     int pivot=0;
 
     //no meta data available
