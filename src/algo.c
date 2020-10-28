@@ -87,7 +87,8 @@ int swap_dyn(dyndata_t* a, dyndata_t* b)
 /*  I : Metadata of the array                               */
 /*      index for which retrieve the element                */
 /*  P : Returns the element located at i in the array       */
-/*  O : /                                                   */
+/*  O : NULL if error                                       */
+/*      Address of the element otherwise                    */
 /************************************************************/
 void* get_arrayelem(meta_t* meta, int i)
 {
@@ -100,6 +101,29 @@ void* get_arrayelem(meta_t* meta, int i)
     }
     else
         return meta->structure+(meta->elementsize * i);
+}
+
+/************************************************************/
+/*  I : Metadata of the array                               */
+/*      index of the element to which assign a value        */
+/*      Value to assign                                     */
+/*  P : Set the value for the element located at the index  */
+/*          i in the array                                  */
+/*  O : -1 if error                                         */
+/*      0 otherwise                                         */
+/************************************************************/
+int set_arrayelem(meta_t* meta, int i, void* elem)
+{
+    if(i >= meta->nbelements || i < 0)
+    {
+        if(meta->doPError)
+            (*meta->doPError)("set_arrayelem: index %d out of range", i);
+
+        return -1;
+    }
+
+    memcpy(meta->structure+(meta->elementsize * i), elem, meta->elementsize);
+    return 0;
 }
 
 /************************************************************/

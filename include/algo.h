@@ -49,6 +49,7 @@ dyndata_t* allocate_dyn(meta_t* meta, void* elem);
 int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
 void* get_arrayelem(meta_t* meta, int i);
+int set_arrayelem(meta_t* meta, int i, void* elem);
 
 //Array, list and AVL transformation
 int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action);
