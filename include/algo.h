@@ -83,12 +83,12 @@ int foreachArray(meta_t*, void*, int (*doAction)(void*, void*));
 ////AVL trees
 dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd);
 void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(void*));
-dyndata_t* rotate_AVL(meta_t* meta, dyndata_t* avl, e_rotation side);
-int get_AVL_balance(meta_t* meta, dyndata_t* avl);
+dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side);
+int get_AVL_balance(dyndata_t* avl);
 int foreachAVL(meta_t* meta, dyndata_t* avl, void* parameter, int (*doAction)(void*, void*));
 void* search_AVL(meta_t* meta, dyndata_t* avl, void* key);
 dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
-dyndata_t* min_AVL_value(meta_t* meta, dyndata_t* avl);
+dyndata_t* min_AVL_value(dyndata_t* avl);
 int delete_AVL_root(meta_t* meta);
 
 ////File binary trees

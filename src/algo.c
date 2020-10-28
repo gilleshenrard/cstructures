@@ -3,7 +3,7 @@
 ** Library regrouping algorithmic-based functions
 ** ------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 17/12/2019
+** Last modified : 28/10/2020
 */
 #include "algo.h"
 
@@ -877,29 +877,29 @@ dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
 
     //compute the balance (height difference between left and right)
     if(avl)
-        balance = get_AVL_balance(meta, avl);
+        balance = get_AVL_balance(avl);
 
     //re-balance the tree if necessary
     if(balance < -1){
         // right right case
         if((*meta->doCompare)(avl->right->data, toAdd) < 0){
-            return rotate_AVL(meta, avl, LEFT);
+            return rotate_AVL(avl, LEFT);
         }
         // right left case
         if((*meta->doCompare)(avl->right->data, toAdd) > 0){
-            avl->right = rotate_AVL(meta, avl->right, RIGHT);
-            return rotate_AVL(meta, avl, LEFT);
+            avl->right = rotate_AVL(avl->right, RIGHT);
+            return rotate_AVL(avl, LEFT);
         }
     }
     if(balance > 1){
         // left left case
         if((*meta->doCompare)(avl->left->data, toAdd) > 0){
-            return rotate_AVL(meta, avl, RIGHT);
+            return rotate_AVL(avl, RIGHT);
         }
         //left right case
         if((*meta->doCompare)(avl->left->data, toAdd) < 0){
-            avl->left = rotate_AVL(meta, avl->left, LEFT);
-            return rotate_AVL(meta, avl, RIGHT);
+            avl->left = rotate_AVL(avl->left, LEFT);
+            return rotate_AVL(avl, RIGHT);
         }
     }
 
@@ -942,13 +942,12 @@ void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(
 }
 
 /************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      AVL tree to rotate                                  */
+/*  I : AVL tree to rotate                                  */
 /*      Side of the rotation (LEFT or RIGHT)                */
 /*  P : Rotates an AVL to the side required                 */
 /*  O : Rotated AVL                                         */
 /************************************************************/
-dyndata_t* rotate_AVL(meta_t* meta, dyndata_t* avl, e_rotation side){
+dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side){
     dyndata_t *newTree=NULL, *child=NULL;
     int height_l=0, height_r=0;
 
@@ -987,12 +986,11 @@ dyndata_t* rotate_AVL(meta_t* meta, dyndata_t* avl, e_rotation side){
 }
 
 /************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      AVL tree of which to compute the balance            */
+/*  I : AVL tree of which to compute the balance            */
 /*  P : Computes and returns the balance of an AVL          */
 /*  O : Balance                                             */
 /************************************************************/
-int get_AVL_balance(meta_t* meta, dyndata_t* avl){
+int get_AVL_balance(dyndata_t* avl){
     int height_left=0, height_right=0;
 
     if(!avl)
@@ -1119,7 +1117,7 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key){
             //2 children nodes
             //copy the data from the child directly at the right of the avl,
             //      then delete said child
-            tmp = min_AVL_value(meta, root->right);
+            tmp = min_AVL_value(root->right);
             memcpy(root->data, tmp->data, meta->elementsize);
             root->right = delete_AVL(meta, root->right, tmp->data);
         }
@@ -1136,27 +1134,27 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key){
     root->height = 1+(height_left > height_right ? height_left : height_right);
 
     //if still a root, re-balance accordingly
-    balance = get_AVL_balance(meta, root);
+    balance = get_AVL_balance(root);
     if(balance < -1){
         // right right case
-        if(get_AVL_balance(meta, root->right) <= 0){
-            return rotate_AVL(meta, root, LEFT);
+        if(get_AVL_balance(root->right) <= 0){
+            return rotate_AVL(root, LEFT);
         }
         // right left case
-        if(get_AVL_balance(meta, root->right) > 0){
-            root->right = rotate_AVL(meta, root->right, RIGHT);
-            return rotate_AVL(meta, root, LEFT);
+        if(get_AVL_balance(root->right) > 0){
+            root->right = rotate_AVL(root->right, RIGHT);
+            return rotate_AVL(root, LEFT);
         }
     }
     if(balance > 1){
         // left left case
-        if(get_AVL_balance(meta, root->left) >= 0){
-            return rotate_AVL(meta, root, RIGHT);
+        if(get_AVL_balance(root->left) >= 0){
+            return rotate_AVL(root, RIGHT);
         }
         //left right case
-        if(get_AVL_balance(meta, root->right) < 0){
-            root->left = rotate_AVL(meta, root->left, LEFT);
-            return rotate_AVL(meta, root, RIGHT);
+        if(get_AVL_balance(root->right) < 0){
+            root->left = rotate_AVL(root->left, LEFT);
+            return rotate_AVL(root, RIGHT);
         }
     }
 
@@ -1179,13 +1177,12 @@ int delete_AVL_root(meta_t* meta){
 }
 
 /************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      AVL for which find the smallest value               */
+/*  I : AVL for which find the smallest value               */
 /*  P : Finds the subtree with the smallest value           */
 /*          (most to the left)                              */
 /*  O : Most left node in the subtree                       */
 /************************************************************/
-dyndata_t* min_AVL_value(meta_t* meta, dyndata_t* avl){
+dyndata_t* min_AVL_value(dyndata_t* avl){
     dyndata_t* current = avl;
 
     while(current->left){
