@@ -3,7 +3,7 @@
 ** Contains all the tests concerning algorithmic features in libalgo.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 22/11/2019
+** Last modified : 28/10/2020
 */
 #include <time.h>
 #include <stdlib.h>
@@ -22,6 +22,9 @@ int tst_insertavl(void);
 int tst_removeavl(void);
 int tst_searchavl(void);
 
+#ifdef __GNUC__
+# pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
