@@ -7,7 +7,7 @@ chead:= ../include
 
 #flags necessary to the compilation
 CC := gcc
-CFLAGS:= -fPIC -Wall -Werror -g -I$(chead)
+CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
 lib_b:= libalgo.so libdataset_test.so
 
 #objects compilation from the source files

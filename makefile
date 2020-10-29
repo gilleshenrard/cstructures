@@ -5,7 +5,7 @@ cbin := bin
 
 #flags necessary to the compilation
 CC := gcc
-CFLAGS:= -fPIC -Wall -Werror -g -I$(chead)
+CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
 LFLAGS:= -ldataset_test -lalgo
 LDFLAGS:= -Wl,--disable-new-dtags -Wl,-rpath,\$$ORIGIN/../lib
 
