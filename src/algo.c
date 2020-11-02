@@ -552,6 +552,20 @@ void* get_listelem(meta_t* meta, uint32_t i)
 }
 
 /************************************************************/
+/*  I : Element of which get the next one in the structure  */
+/*  P : Returns the address of the next element             */
+/*  O : NULL -> no element to the ritht                     */
+/*      Otherwise -> address of the next element            */
+/************************************************************/
+dyndata_t* getright(dyndata_t* cur)
+{
+    if(cur)
+        return cur->right;
+    else
+        return NULL;
+}
+
+/************************************************************/
 /*  I : Element of which get the data                       */
 /*  P : Returns the data of the element                     */
 /*  O : NULL -> no element to the ritht                     */
