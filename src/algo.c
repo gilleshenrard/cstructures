@@ -1333,8 +1333,8 @@ int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t
 
         //read the corresponding element and add it to the list
         fseek(fp, offset, SEEK_SET);
-        table_buf = calloc(1, index->elementsize);
-        fread(table_buf, 1, index->elementsize, fp);
+        table_buf = calloc(1, lis->elementsize);
+        fread(table_buf, 1, lis->elementsize, fp);
         insertListSorted(lis, table_buf);
         free(table_buf);
     }
