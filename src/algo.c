@@ -1304,9 +1304,8 @@ long index_tree(FILE* fp, long offset_start, long nb, meta_t* meta){
 /*  I : File pointer to the database                        */
 /*      Offset of the index tree root                       */
 /*      Key to search in the index                          */
-/*      Metadata necessary to the index algorithm           */
-/*      Metadata necessary to the list algorithm            */
-/*      Size of an element in the table                     */
+/*      Metadata of the array of index elements             */
+/*      Metadata of the list of table elements              */
 /*  P : Searches for the key in the index and add all       */
 /*          matching elements in a list                     */
 /*  O :  0 if OK                                            */
@@ -1315,7 +1314,7 @@ long index_tree(FILE* fp, long offset_start, long nb, meta_t* meta){
 /* WARNING : the index structure must finish with left and  */
 /*              right long int types                        */
 /************************************************************/
-int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t* lis, int elem_size){
+int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t* lis){
     void *index_buf=NULL, *table_buf=NULL;
     int comparison = 0;
     long offset = 0;
@@ -1334,8 +1333,8 @@ int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t
 
         //read the corresponding element and add it to the list
         fseek(fp, offset, SEEK_SET);
-        table_buf = calloc(1, elem_size);
-        fread(table_buf, 1, elem_size, fp);
+        table_buf = calloc(1, index->elementsize);
+        fread(table_buf, 1, index->elementsize, fp);
         insertListSorted(lis, table_buf);
         free(table_buf);
     }
@@ -1345,7 +1344,7 @@ int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t
         fseek(fp, offset_root + (index->elementsize - 2*sizeof(long)), SEEK_SET);
         fread(&offset, 1, sizeof(long), fp);
         if(offset)
-            searchall_index(fp, offset, key, index, lis, elem_size);
+            searchall_index(fp, offset, key, index, lis);
     }
 
     //perform the search in the right subtree
@@ -1353,7 +1352,7 @@ int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t
         fseek(fp, offset_root + (index->elementsize - sizeof(long)), SEEK_SET);
         fread(&offset, 1, sizeof(long), fp);
         if(offset)
-            searchall_index(fp, offset, key, index, lis, elem_size);
+            searchall_index(fp, offset, key, index, lis);
     }
 
     free(index_buf);
