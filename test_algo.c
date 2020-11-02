@@ -3,7 +3,7 @@
 ** Contains all the tests concerning algorithmic features in libalgo.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 28/10/2020
+** Last modified : 02/11/2020
 */
 #include <time.h>
 #include <stdlib.h>
@@ -15,6 +15,7 @@ int tst_bubblesortarray(void);
 int tst_quicksortarray(void);
 int tst_binarysearcharray(void);
 int tst_inserttoplist(void);
+int tst_insertbottomlist(void);
 int tst_insertlistsorted(void);
 int tst_bubblesortlist(void);
 int tst_structuresconversion(void);
@@ -33,6 +34,7 @@ int main(int argc, char *argv[])
     tst_quicksortarray();
     tst_binarysearcharray();
     tst_inserttoplist();
+    tst_insertbottomlist();
     tst_insertlistsorted();
     tst_bubblesortlist();
     tst_structuresconversion();
@@ -83,7 +85,7 @@ int setup_data(dataset_t** data, long nb)
 /************************************************************/
 int tst_bubblesortarray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/******************************************************************/\n");
     printf("/********************* tst_bubblesortarray ************************/\n");
@@ -137,7 +139,7 @@ int tst_bubblesortarray()
 /************************************************************/
 int tst_quicksortarray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/******************************************************************/\n");
     printf("/********************* tst_quicksortarray *************************/\n");
@@ -179,7 +181,7 @@ int tst_quicksortarray()
 /************************************************************/
 int tst_binarysearcharray()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
     dataset_t* tmp = NULL;
     int found=0;
 
@@ -236,8 +238,8 @@ int tst_binarysearcharray()
 /************************************************************/
 int tst_inserttoplist()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_inserttoplist *****************************/\n");
@@ -284,14 +286,68 @@ int tst_inserttoplist()
 
 /************************************************************/
 /*  I : /                                                   */
+/*  P : Tests out the insertion at the bottom of a list     */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_insertbottomlist()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+
+    printf("/*********************************************************************/\n");
+    printf("/********************* tst_insertbottomlist ***************************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "insertTopList : error while allocating the data\n");
+        return -1;
+    }
+
+    //display the sorted data
+    foreachArray(&arr, NULL, Print_dataset);
+    printf("----------------------------------------------------------\n");
+
+    for(int i=0 ; i<20 ; i++)
+    {
+        if(insertListBottom(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        {
+            fprintf(stderr, "insertBottomList : error while inserting the data\n");
+            free(arr.structure);
+            freeDynList(&lis);
+            return -1;
+        }
+    }
+
+    //free memory used by the array
+    free(arr.structure);
+
+    //list the content of the list, each time popping one element at its head
+    while(lis.structure)
+    {
+        foreachList(&lis, NULL, Print_dataset);
+        printf("Nb of elements: %lu\n", (unsigned long int)lis.nbelements);
+        printf("----------------------------------------------------------\n");
+        printf("Data with list head purged:\n");
+        popListTop(&lis);
+
+    }
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : /                                                   */
 /*  P : Tests out the insertion in a sorted list            */
 /*  O :  0 -> Success                                       */
 /*      -1 -> Error                                         */
 /************************************************************/
 int tst_insertlistsorted()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_insertlistsorted **************************/\n");
@@ -308,18 +364,23 @@ int tst_insertlistsorted()
     foreachArray(&arr, NULL, Print_dataset);
     printf("----------------------------------------------------------\n");
 
-    if(arrayToList(&arr, &lis, REPLACE) == -1)
+    for(int i=0 ; i<20 ; i++)
     {
-        fprintf(stderr, "insertListSorted : error while inserting the data\n");
-        free(arr.structure);
-        freeDynList(&lis);
-        return -1;
+        if(insertListSorted(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        {
+            fprintf(stderr, "insertListSorted : error while inserting the data\n");
+            free(arr.structure);
+            freeDynList(&lis);
+            return -1;
+        }
     }
 
     printf("Data sorted:\n");
     //display the content of the list, and delete it
     foreachList(&lis, NULL, Print_dataset);
     freeDynList(&lis);
+
+    free(arr.structure);
 
     return 0;
 }
@@ -332,8 +393,8 @@ int tst_insertlistsorted()
 /************************************************************/
 int tst_bubblesortlist()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_bubblesortlist ****************************/\n");
@@ -386,8 +447,8 @@ int tst_bubblesortlist()
 /************************************************************/
 int tst_structuresconversion()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t lis = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/********************* tst_structuresconversion **********************/\n");
@@ -442,8 +503,8 @@ int tst_structuresconversion()
 /************************************************************/
 int tst_insertavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/*************************** tst_insertavl ***************************/\n");
@@ -477,8 +538,8 @@ int tst_insertavl()
 /************************************************************/
 int tst_removeavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
 
     printf("/*********************************************************************/\n");
     printf("/*************************** tst_removeavl ***************************/\n");
@@ -516,8 +577,8 @@ int tst_removeavl()
 /************************************************************/
 int tst_searchavl()
 {
-    meta_t arr = {NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
-    meta_t avl = {NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t avl = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
     dataset_t *tmp = NULL;
 
     printf("/*********************************************************************/\n");

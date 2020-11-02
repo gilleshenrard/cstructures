@@ -3,7 +3,7 @@
 ** Library regrouping algorithmic-based functions
 ** ------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 28/10/2020
+** Last modified : 02/11/2020
 */
 #include "algo.h"
 
@@ -201,7 +201,7 @@ int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action){
     for(uint32_t i=0 ; i<dArray->nbelements ; i++)
     {
         //insert in the list
-        if(insertListSorted(dList,  get_arrayelem(dArray, i)) < 0)
+        if(insertListBottom(dList,  get_arrayelem(dArray, i)) < 0)
         {
             if(dList->doPError)
                 (*dList->doPError)("arrayToList: error while inserting in the list");
@@ -523,7 +523,7 @@ void* get_listelem(meta_t* meta, uint32_t i)
     dyndata_t *tmp = meta->structure, *next = NULL;
     uint32_t index = 0;
 
-    if(i>=meta->nbelements)
+    if(i >= meta->nbelements)
     {
         if(meta->doPError)
             (*meta->doPError)("get_listelem: no element at index %d", i);
@@ -531,6 +531,15 @@ void* get_listelem(meta_t* meta, uint32_t i)
         return NULL;
     }
 
+    //first element requested
+    if(!i)
+        return ((dyndata_t*)meta->structure)->data;
+
+    //last element requested
+    if(i == meta->elementsize - 1)
+        return ((dyndata_t*)meta->last)->data;
+
+    //element between the first and the last
     next = tmp->right;
     while(index<i)
     {
@@ -605,8 +614,10 @@ int insertListTop(meta_t* meta, void *toAdd){
         tmp = meta->structure;
         tmp->left = newElement;
     }
-    else
+    else{
         meta->nbelements = 0;
+        meta->last = newElement;
+    }
 
     //make the new element head of the list
     meta->structure = newElement;
@@ -625,7 +636,7 @@ int insertListTop(meta_t* meta, void *toAdd){
 /*     -1 -> Error                                          */
 /************************************************************/
 int insertListBottom(meta_t* meta, void *toAdd){
-    dyndata_t *newElement = NULL, *tmp=NULL, *next=NULL;
+    dyndata_t *newElement = NULL;
 
     //check if meta data available
     if(!meta || !toAdd)
@@ -647,22 +658,15 @@ int insertListBottom(meta_t* meta, void *toAdd){
     {
         //list empty, element becomes the head
         meta->structure = newElement;
-        meta->nbelements = 1;
+        meta->last = newElement;
     }
     else
     {
-        tmp=meta->structure;
-        next = tmp->right;
-        //find the end of the list
-        while(next)
-        {
-            tmp = next;
-            next = tmp->right;
-        }
+        ((dyndata_t*)meta->last)->right = newElement;
 
         //chain up the new element at the end
-        tmp->right = newElement;
-        newElement->left = tmp;
+        newElement->left = meta->last;
+        meta->last = newElement;
     }
 
     //increment the elements counter
@@ -711,6 +715,44 @@ int popListTop(meta_t* meta){
 
 /************************************************************/
 /*  I : Metadata necessary to the algorithm                 */
+/*  P : Removes the last element of the list                */
+/*  O : 0 -> Element popped                                 */
+/*     -1 -> Error                                          */
+/************************************************************/
+int popListBottom(meta_t* meta){
+    dyndata_t *tail = NULL, *second=NULL;
+
+    //check if meta data available
+    if(!meta)
+    {
+        if(meta->doPError)
+            (*meta->doPError)("popListBottom: list metadata not defined");
+        return -1;
+    }
+
+    //Structure is empty
+    if(!meta->structure)
+        return 0;
+
+    //save list tail and retrieve next element
+    tail = meta->last;
+    second = tail->left;
+
+    //free and rechain
+    //  note : free() takes a void pointer anyway, so no need to cast
+    free_dyn(tail);
+    if(second && second->right)
+        second->right = NULL;
+    meta->last = second;
+
+    //update the number of elements
+    meta->nbelements--;
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : Metadata necessary to the algorithm                 */
 /*      Element to insert in the list                       */
 /*  P : Inserts an element at the right place in a sorted   */
 /*          linked list                                     */
@@ -723,6 +765,10 @@ int insertListSorted(meta_t *meta, void* toAdd){
     //non-existing list or element is supposed to become the first element
     if(!meta->structure || (*meta->doCompare)(toAdd, current->data) <= 0)
         return insertListTop(meta, toAdd);
+
+    //element value is higher than last element, should then be last
+    if((*meta->doCompare)(toAdd, ((dyndata_t*)meta->last)->data) >= 0)
+        return insertListBottom(meta, toAdd);
 
     if((newElement = allocate_dyn(meta, toAdd)) == NULL)
     {
@@ -741,10 +787,6 @@ int insertListSorted(meta_t *meta, void* toAdd){
     //chain new element
     previous->right = newElement;
     newElement->right = current;
-
-    newElement->left = previous;
-    if(current != NULL)
-        current->left = newElement;
 
     //update the element count
     meta->nbelements++;
