@@ -93,9 +93,4 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
 dyndata_t* min_AVL_value(dyndata_t* avl);
 int delete_AVL_root(meta_t* meta);
 
-////File binary trees
-long index_tree(FILE* fp, long offset_start, long nb, meta_t* meta);
-int searchall_index(FILE* fp, long offset_root, void* key, meta_t* index, meta_t* lis);
-int searchone_index(FILE* fp, long offset_root, void* key, meta_t* index, void* element, int elem_size);
-
 #endif // ALGO_H_INCLUDED
