@@ -8,7 +8,7 @@ chead:= ../include
 #flags necessary to the compilation
 CC := gcc
 CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
-lib_b:= libalgo.so libdataset_test.so
+lib_b:= licstructures.so libdataset_test.so
 
 #objects compilation from the source files
 %.o: %.c
@@ -17,7 +17,7 @@ lib_b:= libalgo.so libdataset_test.so
 
 
 #libraries compilation and linking (version number -> *.so file)
-libalgo.so : ../src/algo.o
+libcstructures.so : ../src/cstructures.o
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.2 -o $@.2.1 $<
 	@ ldconfig -n . -l $@.2.1

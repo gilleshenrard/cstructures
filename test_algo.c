@@ -7,7 +7,7 @@
 */
 #include <time.h>
 #include <stdlib.h>
-#include "algo.h"
+#include "cstructures.h"
 #include "dataset_test.h"
 
 int setup_data(dataset_t** data, long nb);

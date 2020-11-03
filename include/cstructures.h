@@ -1,5 +1,5 @@
-#ifndef ALGO_H_INCLUDED
-#define ALGO_H_INCLUDED
+#ifndef CSTRUCTURES_H_INCLUDED
+#define CSTRUCTURES_H_INCLUDED
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -93,4 +93,4 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
 dyndata_t* min_AVL_value(dyndata_t* avl);
 int delete_AVL_root(meta_t* meta);
 
-#endif // ALGO_H_INCLUDED
+#endif // CSTRUCTURES_H_INCLUDED

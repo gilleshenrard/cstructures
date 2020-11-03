@@ -5,7 +5,7 @@
 ** Made by Gilles Henrard
 ** Last modified : 02/11/2020
 */
-#include "algo.h"
+#include "cstructures.h"
 
 /************************************************************/
 /*  I : Metadata of the element to allocate                 */
