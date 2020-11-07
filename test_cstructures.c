@@ -3,14 +3,14 @@
 ** Contains all the tests concerning algorithmic features in libalgo.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 02/11/2020
+** Last modified : 07/11/2020
 */
 #include <time.h>
 #include <stdlib.h>
 #include "cstructures.h"
 #include "dataset_test.h"
 
-int setup_data(dataset_t** data, long nb);
+int setup_data(dataset_t** data, uint32_t nb);
 int tst_bubblesortarray(void);
 int tst_quicksortarray(void);
 int tst_binarysearcharray(void);
@@ -52,16 +52,16 @@ int main(int argc, char *argv[])
 /*  O :  0 -> Array created                                 */
 /*      -1 -> Error                                         */
 /************************************************************/
-int setup_data(dataset_t** data, long nb)
+int setup_data(dataset_t** data, uint32_t nb)
 {
-    int r = 0, r2 = 0;
+    uint32_t r = 0, r2 = 0;
 
     //allocate a space of nb times the size of dataset_t
     *data = calloc(nb, sizeof(dataset_t));
     if(!*data)
         return -1;
 
-    for(int i=0 ; i<nb ; i++)
+    for(uint32_t i=0 ; i<nb ; i++)
     {
         //generate a radom number between 1 and nb (inclusive),
         //  and a second between 1 and 5
@@ -131,29 +131,30 @@ int tst_bubblesortarray()
     return 0;
 }
 
-/************************************************************/
-/*  I : /                                                   */
-/*  P : Tests out the quick sort algo with arrays           */
-/*  O :  0 -> Success                                       */
-/*      -1 -> Error                                         */
-/************************************************************/
+/********************************************************************/
+/*  I : /                                                           */
+/*  P : Tests out the quick sort algo with array of 10000 elements  */
+/*  O :  0 -> Success                                               */
+/*      -1 -> Error                                                 */
+/********************************************************************/
 int tst_quicksortarray()
 {
-    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t arr = {NULL, NULL, 100000, sizeof(dataset_t), compare_dataset, NULL};
+    uint32_t i = 0;
+    int cmp = 0;
 
     printf("/******************************************************************/\n");
     printf("/********************* tst_quicksortarray *************************/\n");
     printf("/******************************************************************/\n");
 
-    //generate 20 random datasets
-    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    //generate 100000 random datasets
+    if(setup_data((dataset_t**)&arr.structure, arr.nbelements) == -1)
     {
         fprintf(stderr, "quickSortArray : error while allocating the data\n");
         return -1;
     }
 
-    //display the unsorted data
-    foreachArray(&arr, NULL, Print_dataset);
+    printf("100000 elements created\n");
     printf("----------------------------------------------------------\n");
 
     //sort it
@@ -164,9 +165,26 @@ int tst_quicksortarray()
         return -1;
     }
 
-    printf("Data sorted:\n");
-    //display all the datasets
-    foreachArray(&arr, NULL, Print_dataset);
+    //check if each element is lower than the next one
+    i = -1;
+    do{
+        i++;
+        cmp = (*arr.doCompare)(get_arrayelem(&arr, i), get_arrayelem(&arr, i+1));
+    }while(i < arr.nbelements - 2 && cmp <= 0);
+
+    if(cmp <= 0 && i == arr.nbelements - 2){
+        printf("All %u elements properly sorted\n", arr.nbelements);
+        printf("Displaying the first 50 elements :\n");
+        for(i = 0 ; i < 50 ; i++)
+            Print_dataset(get_arrayelem(&arr, i), NULL);
+    }
+    else{
+        fprintf(stderr, "Elements %u and %u not properly sorted in the array :\n", i, i+1);
+        Print_dataset(get_arrayelem(&arr, i), NULL);
+        Print_dataset(get_arrayelem(&arr, i+1), NULL);
+        free(arr.structure);
+        return -1;
+    }
 
     //free memory
     free(arr.structure);
