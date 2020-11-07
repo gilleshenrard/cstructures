@@ -1,6 +1,6 @@
 /*
 ** test_algo.c
-** Contains all the tests concerning algorithmic features in libalgo.so
+** Contains all the tests concerning algorithmic features in libcstructures.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
 ** Last modified : 07/11/2020
