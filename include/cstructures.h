@@ -50,8 +50,11 @@ typedef enum {FIRST, ANY} e_search;
 dyndata_t* allocate_dyn(meta_t* meta, void* elem);
 int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
+
+//Arrays
 void* get_arrayelem(meta_t* meta, uint32_t i);
 int set_arrayelem(meta_t* meta, uint32_t i, void* elem);
+int empty_array(meta_t* meta);
 
 //Array, list and AVL transformation
 int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action);

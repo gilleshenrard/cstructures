@@ -70,7 +70,7 @@ int setup_data(dataset_t** data, uint32_t nb)
 
         //fill in information relative to the random number
         (*data)[i].id = r;
-        sprintf((*data)[i].type, "value : %02d", r*r2);
+        sprintf((*data)[i].type, "value : %05d", r*r2);
         (*data)[i].price = (float)r * 3.141593;
     }
 
@@ -105,7 +105,7 @@ int tst_bubblesortarray()
     if(bubbleSortArray(&arr, 3) == -1)
     {
         fprintf(stderr, "bubbleSortArray : error while sorting the data\n");
-        free(arr.structure);
+        empty_array(&arr);
         return -1;
     }
 
@@ -118,7 +118,7 @@ int tst_bubblesortarray()
     if(bubbleSortArray(&arr, arr.nbelements) == -1)
     {
         fprintf(stderr, "bubbleSortArray : error while sorting the data\n");
-        free(arr.structure);
+        empty_array(&arr);
         return -1;
     }
 
@@ -127,7 +127,7 @@ int tst_bubblesortarray()
     foreachArray(&arr, NULL, Print_dataset);
 
     //free memory
-    free(arr.structure);
+    empty_array(&arr);
     return 0;
 }
 
@@ -161,7 +161,7 @@ int tst_quicksortarray()
     if(quickSortArray(&arr, 0, arr.nbelements-1) == -1)
     {
         fprintf(stderr, "quickSortArray : error while sorting the data\n");
-        free(arr.structure);
+        empty_array(&arr);
         return -1;
     }
 
@@ -182,12 +182,12 @@ int tst_quicksortarray()
         fprintf(stderr, "Elements %u and %u not properly sorted in the array :\n", i, i+1);
         Print_dataset(get_arrayelem(&arr, i), NULL);
         Print_dataset(get_arrayelem(&arr, i+1), NULL);
-        free(arr.structure);
+        empty_array(&arr);
         return -1;
     }
 
     //free memory
-    free(arr.structure);
+    empty_array(&arr);
     return 0;
 }
 
@@ -218,7 +218,7 @@ int tst_binarysearcharray()
     if(quickSortArray(&arr, 0, arr.nbelements-1) == -1)
     {
         fprintf(stderr, "binarysearchArray : error while sorting the data\n");
-        free(arr.structure);
+        empty_array(&arr);
         return -1;
     }
 
@@ -244,7 +244,7 @@ int tst_binarysearcharray()
         printf("First occurence of %d was found at index %d\n", tmp->id, found);
 
     //free memory
-    free(arr.structure);
+    empty_array(&arr);
     return 0;
 }
 
@@ -279,14 +279,14 @@ int tst_inserttoplist()
         if(insertListTop(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertTopList : error while inserting the data\n");
-            free(arr.structure);
+            empty_array(&arr);
             freeDynList(&lis);
             return -1;
         }
     }
 
     //free memory used by the array
-    free(arr.structure);
+    empty_array(&arr);
 
     //list the content of the list, each time popping one element at its head
     while(lis.structure)
@@ -333,14 +333,14 @@ int tst_insertbottomlist()
         if(insertListBottom(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertBottomList : error while inserting the data\n");
-            free(arr.structure);
+            empty_array(&arr);
             freeDynList(&lis);
             return -1;
         }
     }
 
     //free memory used by the array
-    free(arr.structure);
+    empty_array(&arr);
 
     //list the content of the list, each time popping one element at its head
     while(lis.structure)
@@ -387,7 +387,7 @@ int tst_insertlistsorted()
         if(insertListSorted(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertListSorted : error while inserting the data\n");
-            free(arr.structure);
+            empty_array(&arr);
             freeDynList(&lis);
             return -1;
         }
@@ -398,7 +398,7 @@ int tst_insertlistsorted()
     foreachList(&lis, NULL, Print_dataset);
     freeDynList(&lis);
 
-    free(arr.structure);
+    empty_array(&arr);
 
     return 0;
 }
@@ -434,14 +434,14 @@ int tst_bubblesortlist()
         if(insertListTop(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertTopList : error while inserting the data\n");
-            free(arr.structure);
+            empty_array(&arr);
             freeDynList(&lis);
             return -1;
         }
     }
 
     //free memory used by the array
-    free(arr.structure);
+    empty_array(&arr);
 
     //sort the list using the bubble sort and display it
     bubbleSortList(&lis, 3);
@@ -487,7 +487,7 @@ int tst_structuresconversion()
     if(arrayToList(&arr, &lis, REPLACE) == -1)
     {
         fprintf(stderr, "structureConversion : error while creating the list\n");
-        free(arr.structure);
+        empty_array(&arr);
         freeDynList(&lis);
         return -1;
     }
@@ -500,7 +500,7 @@ int tst_structuresconversion()
     if(listToArray(&lis, &arr, REPLACE) == -1)
     {
         fprintf(stderr, "structureConversion : error while creating the array\n");
-        free(arr.structure);
+        empty_array(&arr);
         freeDynList(&lis);
         return -1;
     }
@@ -508,7 +508,7 @@ int tst_structuresconversion()
     foreachArray(&arr, NULL, Print_dataset);
     printf("list pointer: %p, number of elments: %lu\n", lis.structure, (unsigned long int)lis.nbelements);
 
-    free(arr.structure);
+    empty_array(&arr);
 
     return 0;
 }
@@ -541,7 +541,7 @@ int tst_insertavl()
     arrayToAVL(&arr, &avl, REPLACE);
     display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
 
-    free(arr.structure);
+    empty_array(&arr);
     while(avl.structure)
         delete_AVL_root(&avl);
 
@@ -582,7 +582,7 @@ int tst_removeavl()
         printf("----------------------------------------------------------\n");
     }
 
-    free(arr.structure);
+    empty_array(&arr);
 
     return 0;
 }
@@ -621,7 +621,7 @@ int tst_searchavl()
     else
         printf("Element %s found\n", toString_dataset(tmp));
 
-    free(arr.structure);
+    empty_array(&arr);
     while(avl.structure)
         delete_AVL_root(&avl);
 

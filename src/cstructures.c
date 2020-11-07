@@ -3,7 +3,7 @@
 ** Library regrouping algorithmic-based functions
 ** ------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 02/11/2020
+** Last modified : 07/11/2020
 */
 #include "cstructures.h"
 
@@ -127,6 +127,24 @@ int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
 }
 
 /************************************************************/
+/*  I : Metadata of the array                               */
+/*  P : Free the memory occupied by the array               */
+/*  O : -1 if error                                         */
+/*      0 otherwise                                         */
+/************************************************************/
+int empty_array(meta_t* meta){
+    //free the array itself
+    free(meta->structure);
+    meta->structure = NULL;
+
+    //reset rest of the data
+    meta->last = NULL;
+    meta->nbelements = 0;
+
+    return 0;
+}
+
+/************************************************************/
 /*  I : List to copy                                        */
 /*      Array to create (MUST BE EMPTY)                     */
 /*      Action to perform on the list members (free or not) */
@@ -212,11 +230,7 @@ int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action){
 
     //if desired, free the freshly copied element
     if(action == REPLACE)
-    {
-        free(dArray->structure);
-        dArray->structure = NULL;
-        dArray->nbelements = 0;
-    }
+        empty_array(dArray);
 
     return 0;
 }
@@ -242,11 +256,7 @@ int arrayToAVL(meta_t* dArray, meta_t* dAVL, e_listtoarray action){
 
     //if desired, free the freshly copied element
     if(action == REPLACE)
-    {
-        free(dArray->structure);
-        dArray->structure = NULL;
-        dArray->nbelements = 0;
-    }
+        empty_array(dArray);
 
     return 0;
 }
