@@ -580,7 +580,7 @@ void* get_listelem(meta_t* meta, uint32_t i)
 
     //last element requested
     if(i == meta->elementsize - 1)
-        return ((dyndata_t*)meta->last)->data;
+        return meta->last->data;
 
     //element between the first and the last
     next = tmp->right;
@@ -677,7 +677,7 @@ int insertListBottom(meta_t* meta, void *toAdd){
     }
     else
     {
-        ((dyndata_t*)meta->last)->right = newElement;
+        meta->last->right = newElement;
 
         //chain up the new element at the end
         newElement->left = meta->last;
@@ -782,7 +782,7 @@ int insertListSorted(meta_t *meta, void* toAdd){
         return insertListTop(meta, toAdd);
 
     //element value is higher than last element, should then be last
-    if((*meta->doCompare)(toAdd, ((dyndata_t*)meta->last)->data) >= 0)
+    if((*meta->doCompare)(toAdd, meta->last->data) >= 0)
         return insertListBottom(meta, toAdd);
 
     if((newElement = allocate_dyn(meta, toAdd)) == NULL)
@@ -805,6 +805,51 @@ int insertListSorted(meta_t *meta, void* toAdd){
 
     //update the element count
     meta->nbelements++;
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : Metadata necessary to the algorithm                 */
+/*      Element to remove from the list                     */
+/*  P : Remove an element from a sorted linked list         */
+/*  O : 0 -> Element removed                                */
+/*     -1 -> Error                                          */
+/************************************************************/
+int removeListSorted(meta_t *meta, void *elem){
+    dyndata_t *previous = NULL, *current = NULL, *next = NULL;
+
+    //metadata not provided
+    if(!meta || !meta->doCompare)
+        return -1;
+
+    //list is empty
+    if(!meta->structure)
+        return 0;
+
+    //search for the first occurrence of the element to remove from the list
+    current = meta->structure;
+    next = current->right;
+    while((*meta->doCompare)(current->data, elem) < 0 && next){
+        previous = current;
+        current = next;
+        next = next->right;
+    }
+
+    //if element found, get it out of the list and free its memory
+    if(!(*meta->doCompare)(current->data, elem)){
+        if(!previous)
+            return popListTop(meta);
+        if(!next)
+            return popListBottom(meta);
+
+        previous->right = next;
+        next->left = previous;
+        free_dyn(current);
+
+        //decrement the amount of elements
+        meta->nbelements--;
+    }
 
     return 0;
 }

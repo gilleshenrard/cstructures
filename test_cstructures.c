@@ -17,6 +17,7 @@ int tst_binarysearcharray(void);
 int tst_inserttoplist(void);
 int tst_insertbottomlist(void);
 int tst_insertlistsorted(void);
+int tst_removelistsorted(void);
 int tst_bubblesortlist(void);
 int tst_structuresconversion(void);
 int tst_insertavl(void);
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
     tst_inserttoplist();
     tst_insertbottomlist();
     tst_insertlistsorted();
+    tst_removelistsorted();
     tst_bubblesortlist();
     tst_structuresconversion();
     tst_insertavl();
@@ -395,6 +397,57 @@ int tst_insertlistsorted()
 
     printf("Data sorted:\n");
     //display the content of the list, and delete it
+    foreachList(&lis, NULL, Print_dataset);
+    freeDynList(&lis);
+
+    empty_array(&arr);
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : /                                                   */
+/*  P : Tests out the insertion in a sorted list            */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_removelistsorted()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+
+    printf("/*********************************************************************/\n");
+    printf("/********************* tst_removelistsorted **************************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "removelistsorted : error while allocating the data\n");
+        return -1;
+    }
+
+    //transform the array to a list and display the data
+    printf("----------------------------------------------------------\n");
+    for(int i=0 ; i<20 ; i++)
+    {
+        if(insertListSorted(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        {
+            fprintf(stderr, "removelistsorted : error while inserting the data\n");
+            empty_array(&arr);
+            freeDynList(&lis);
+            return -1;
+        }
+    }
+    foreachList(&lis, NULL, Print_dataset);
+
+    //remove elements at index 0, 4, last
+    removeListSorted(&lis, get_listelem(&lis, 0));
+    removeListSorted(&lis, get_listelem(&lis, 4));
+    removeListSorted(&lis, lis.last->data);
+
+    //display the content of the list, and delete it
+    printf("Data after removing 1st, 5th and last elements:\n");
     foreachList(&lis, NULL, Print_dataset);
     freeDynList(&lis);
 

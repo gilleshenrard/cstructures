@@ -30,7 +30,7 @@ struct dyndata_t
 typedef struct
 {
     void*       structure;                      //pointer to the root of the whole structure
-    void*       last;                           //highest element in the structure
+    dyndata_t*  last;                           //highest element in the structure
     uint32_t    nbelements;                     //number of elements in the structure
     uint32_t    elementsize;                    //size of a core element (actual data without algorithmic overlay)
     int         (*doCompare)(void*, void*);     //comparison method
@@ -79,6 +79,7 @@ int insertListBottom(meta_t* meta, void *toAdd);
 int popListTop(meta_t*);
 int popListBottom(meta_t* meta);
 int insertListSorted(meta_t*,  void*);
+int removeListSorted(meta_t*, void*);
 int freeDynList(meta_t* meta);
 int foreachList(meta_t*, void*, int (*doAction)(void*, void*));
 
