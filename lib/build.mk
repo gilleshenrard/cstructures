@@ -20,13 +20,13 @@ lib_b:= licstructures.so libdataset_test.so
 libcstructures.so : ../src/cstructures.o
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.2 -o $@.2.1 $<
-	@ ldconfig -n . -l $@.2.1
+	@ ldconfig -ln $@.2.1
 	@ ln -sf $@.2 $@
 
 libdataset_test.so : ../src/dataset_test.o
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
-	@ ldconfig -n . -l $@.1.0
+	@ ldconfig -ln $@.1.0
 	@ ln -sf $@.1 $@
 
 
