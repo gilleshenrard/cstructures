@@ -47,9 +47,11 @@ typedef enum {RIGHT, LEFT} e_rotation;
 typedef enum {FIRST, ANY} e_search;
 
 //miscellaneous
-dyndata_t* allocate_dyn(meta_t* meta, void* elem);
+dyndata_t* allocate_dyn(meta_t* meta, const void* elem);
 int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
+void* getdata(dyndata_t* cur);
+dyndata_t* getright(dyndata_t* cur);
 
 //Arrays
 void* get_arrayelem(meta_t* meta, uint32_t i);
@@ -72,8 +74,6 @@ int binarySearchArray(meta_t*, void*, e_search scope);
 
 //Dynamic lists
 void* get_listelem(meta_t* meta, uint32_t i);
-dyndata_t* getright(dyndata_t* cur);
-void* getdata(dyndata_t* cur);
 int insertListTop(meta_t*, void*);
 int insertListBottom(meta_t* meta, void *toAdd);
 int popListTop(meta_t*);

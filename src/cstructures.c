@@ -1,9 +1,13 @@
 /*
-** algo.c
+** cstructures.c
 ** Library regrouping algorithmic-based functions
-** ------------------------------------------
+** Structures available :
+**   - Bidirectional lists
+**   - Arrays
+**   - AVL trees
+** ---------------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 07/11/2020
+** Last modified : 06/01/2021
 */
 #include "cstructures.h"
 
@@ -15,7 +19,7 @@
 /*  O : Address of the element if OK                        */
 /*      NULL if error                                       */
 /************************************************************/
-dyndata_t* allocate_dyn(meta_t* meta, void* elem)
+dyndata_t* allocate_dyn(meta_t* meta, const void* elem)
 {
     dyndata_t* tmp=NULL;
 
@@ -84,8 +88,36 @@ int swap_dyn(dyndata_t* a, dyndata_t* b)
 }
 
 /************************************************************/
+/*  I : Element of which get the data                       */
+/*  P : Returns the data of the element                     */
+/*  O : NULL -> element not allocated                       */
+/*      Otherwise -> address of the data element            */
+/************************************************************/
+void* getdata(dyndata_t* cur)
+{
+    if(cur)
+        return cur->data;
+    else
+        return NULL;
+}
+
+/************************************************************/
+/*  I : Element of which get the next one in the structure  */
+/*  P : Returns the address of the next element             */
+/*  O : NULL -> no element to the right                     */
+/*      Otherwise -> address of the next element            */
+/************************************************************/
+dyndata_t* getright(dyndata_t* cur)
+{
+    if(cur)
+        return cur->right;
+    else
+        return NULL;
+}
+
+/************************************************************/
 /*  I : Metadata of the array                               */
-/*      index for which retrieve the element                */
+/*      index at which retrieve the element                 */
 /*  P : Returns the element located at i in the array       */
 /*  O : NULL if error                                       */
 /*      Address of the element otherwise                    */
@@ -487,9 +519,10 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
 /************************************************************/
 /*  I : Meta data necessary to the algorithm                */
 /*      Element to search                                   */
+/*      Scope of the search (first occurence or any occur.) */
 /*  P : Searches the key using the Binary search algorithm  */
 /*  O : -1  -> Not found                                    */
-/*     >= 0 -> Index of the first occurence in the array    */
+/*     >= 0 -> Index of the occurence found in the array    */
 /************************************************************/
 int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
     int i=0, j=meta->nbelements-1, m=0, index=-1;
@@ -559,34 +592,6 @@ void* get_listelem(meta_t* meta, uint32_t i)
     }
 
     return tmp->data;
-}
-
-/************************************************************/
-/*  I : Element of which get the next one in the structure  */
-/*  P : Returns the address of the next element             */
-/*  O : NULL -> no element to the ritht                     */
-/*      Otherwise -> address of the next element            */
-/************************************************************/
-dyndata_t* getright(dyndata_t* cur)
-{
-    if(cur)
-        return cur->right;
-    else
-        return NULL;
-}
-
-/************************************************************/
-/*  I : Element of which get the data                       */
-/*  P : Returns the data of the element                     */
-/*  O : NULL -> no element to the ritht                     */
-/*      Otherwise -> address of the data element            */
-/************************************************************/
-void* getdata(dyndata_t* cur)
-{
-    if(cur)
-        return cur->data;
-    else
-        return NULL;
 }
 
 /************************************************************/
