@@ -200,7 +200,7 @@ int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action){
 
     //allocate the memory
     dArray->structure = calloc(dList->nbelements, dList->elementsize);
-    if(!dArray)
+    if(!dArray->structure)
     {
         if(dArray->doPError)
             (*dArray->doPError)("listToArray: array could not be allocated");
@@ -306,12 +306,7 @@ int bubbleSortArray(meta_t *meta, uint32_t nb){
 
     //no meta data available
     if(!meta || !meta->doCompare)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("bubbleSortArray: array metadata or mandatory function not defined");
-
         return -1;
-    }
 
     //array is empty
     if(!meta->structure)
@@ -362,12 +357,7 @@ int bubbleSortList(meta_t* meta, uint32_t nb){
 
     //no meta data available
     if(!meta || !meta->doCompare)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("bubbleSortList: list metadata or mandatory function not defined");
-
         return -1;
-    }
 
     //list is empty
     if(!meta->structure)
@@ -474,12 +464,7 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
 
     //no meta data available
     if(!meta || !meta->doCompare)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("quickSortArray: list metadata or mandatory function not defined");
-
         return -1;
-    }
 
     //list is empty
     if(!meta->structure)
@@ -605,7 +590,11 @@ int insertListTop(meta_t* meta, void *toAdd){
     dyndata_t *newElement = NULL, *tmp=NULL;
 
     //check if meta data available
-    if(!meta || !toAdd)
+    if(!meta)
+        return -1;
+
+    //check if element added is available
+    if(!toAdd)
     {
         if(meta->doPError)
             (*meta->doPError)("insertListTop: list metadata or mandatory function not defined");
@@ -654,7 +643,11 @@ int insertListBottom(meta_t* meta, void *toAdd){
     dyndata_t *newElement = NULL;
 
     //check if meta data available
-    if(!meta || !toAdd)
+    if(!meta)
+        return -1;
+
+    //check if element added is available
+    if(!toAdd)
     {
         if(meta->doPError)
             (*meta->doPError)("insertListBottom: list metadata or mandatory function not defined");
@@ -701,11 +694,7 @@ int popListTop(meta_t* meta){
 
     //check if meta data available
     if(!meta)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("popListTop: list metadata not defined");
         return -1;
-    }
 
     //Structure is empty
     if(!meta->structure)
@@ -739,11 +728,7 @@ int popListBottom(meta_t* meta){
 
     //check if meta data available
     if(!meta)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("popListBottom: list metadata not defined");
         return -1;
-    }
 
     //Structure is empty
     if(!meta->structure)
@@ -866,12 +851,7 @@ int freeDynList(meta_t* meta)
     dyndata_t *next = NULL, *current=NULL;
 
     if(!meta)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("freeDynList: list metadata not defined");
-
         return -1;
-    }
 
     next = meta->structure;
 
@@ -896,10 +876,13 @@ int freeDynList(meta_t* meta)
 int foreachList(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     dyndata_t *next = NULL, *current=NULL;
 
-    if(!meta || !doAction)
+    if(!meta)
+        return -1;
+
+    if(!doAction)
     {
         if(meta->doPError)
-            (*meta->doPError)("foreachList: list metadata or mandatory function not defined");
+            (*meta->doPError)("foreachList: action to perform not defined");
 
         return -1;
     }
