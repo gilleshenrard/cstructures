@@ -592,7 +592,7 @@ int tst_insertavl()
     foreachArray(&arr, NULL, Print_dataset);
     printf("----------------------------------------------------------\n");
     arrayToAVL(&arr, &avl, REPLACE);
-    display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
+    display_AVL_tree(&avl, avl.structure, 'T', toString_dataset, printf);
 
     empty_array(&arr);
     while(avl.structure)
@@ -624,13 +624,13 @@ int tst_removeavl()
     }
 
     arrayToAVL(&arr, &avl, REPLACE);
-    display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
+    display_AVL_tree(&avl, avl.structure, 'T', toString_dataset, printf);
     printf("----------------------------------------------------------\n");
 
     while(avl.structure)
     {
         delete_AVL_root(&avl);
-        display_AVL_tree(&avl, avl.structure, 'T', toString_dataset);
+        display_AVL_tree(&avl, avl.structure, 'T', toString_dataset, printf);
         printf("nb of elements remaining: %lu\n", (unsigned long int)avl.nbelements);
         printf("----------------------------------------------------------\n");
     }

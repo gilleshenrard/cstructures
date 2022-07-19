@@ -12,7 +12,6 @@
 #include "cstructures.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 
 /************************************************************/
@@ -1015,10 +1014,11 @@ dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
 /*      Character designed to be displayed to indicate      */
 /*          node direction compared to its root             */
 /*      Method to get the string ID of the node             */
+/*      Method to print a whole line                        */
 /*  P : Displays an AVL as a tree                           */
 /*  O : /                                                   */
 /************************************************************/
-void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(void*)){
+void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(void*), int (*doPrint)(const char*, ...)){
     char tmp[80]={0};
     int height = 0;
     int nbc_pad = 0;
@@ -1031,15 +1031,15 @@ void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(
     offset_max = ++offset > offset_max ? offset : offset_max;
 
     if(avl){
-        display_AVL_tree(meta, avl->right, 'R', toString);
+        display_AVL_tree(meta, avl->right, 'R', toString, doPrint);
 
         nbc_pad = LG_MAX - (3 * offset) - strlen((*toString)(avl->data));
         for (int i=0;i<nbc_pad;i++)
             strcat(tmp,".");
         strcat(tmp,(*toString)(avl->data));
-        printf("%*c%c %s  (H-%d)  L-%14p  T-%14p  R-%14p\n", 3*offset, '-', dir, tmp, height, (void*)avl->left, (void*)avl, (void*)avl->right);
+        (*doPrint)("%*c%c %s  (H-%d)  L-%14p  T-%14p  R-%14p\n", 3*offset, '-', dir, tmp, height, (void*)avl->left, (void*)avl, (void*)avl->right);
 
-        display_AVL_tree(meta, avl->left, 'L', toString);
+        display_AVL_tree(meta, avl->left, 'L', toString, doPrint);
     }
     offset--;
 }
