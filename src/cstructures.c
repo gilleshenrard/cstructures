@@ -7,9 +7,13 @@
 **   - AVL trees
 ** ---------------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 06/01/2021
+** Last modified : 19/07/2022
 */
 #include "cstructures.h"
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 
 /************************************************************/
 /*  I : Metadata of the element to allocate                 */

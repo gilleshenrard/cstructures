@@ -1,10 +1,5 @@
 #ifndef CSTRUCTURES_H_INCLUDED
 #define CSTRUCTURES_H_INCLUDED
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-#include <errno.h>
-#include <stdint.h>
 #include <inttypes.h>
 
 /*
