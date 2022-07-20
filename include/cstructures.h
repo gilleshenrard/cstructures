@@ -2,6 +2,7 @@
 #define CSTRUCTURES_H_INCLUDED
 #include "cstructurescommon.h"
 #include "carrays.h"
+#include "clists.h"
 
 // variables to use in display_AVL_tree()
 int offset, offset_max;
@@ -15,20 +16,6 @@ typedef enum {RIGHT, LEFT} e_rotation;
 int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action);
 int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action);
 int arrayToAVL(meta_t* dArray, meta_t* dAVL, e_listtoarray action);
-
-//Sorting algorithms
-int bubbleSortList(meta_t*, uint32_t);
-
-//Dynamic lists
-void* get_listelem(meta_t* meta, uint32_t i);
-int insertListTop(meta_t*, void*);
-int insertListBottom(meta_t* meta, void *toAdd);
-int popListTop(meta_t*);
-int popListBottom(meta_t* meta);
-int insertListSorted(meta_t*,  void*);
-int removeListSorted(meta_t*, void*);
-int freeDynList(meta_t* meta);
-int foreachList(meta_t*, void*, int (*doAction)(void*, void*));
 
 ////AVL trees
 dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd);

@@ -8,7 +8,7 @@ chead:= ../include
 #flags necessary to the compilation
 CC := gcc
 CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
-lib_b:= libcarrays.so libcstructurescommon.so libcstructures.so libdataset_test.so
+lib_b:= libcarrays.so libclists.so libcstructurescommon.so libcstructures.so libdataset_test.so
 
 #objects compilation from the source files
 %.o: %.c
@@ -16,6 +16,12 @@ lib_b:= libcarrays.so libcstructurescommon.so libcstructures.so libdataset_test.
 	@ $(CC) $(CFLAGS) -o $@ -c $<
 
 #libraries compilation and linking (version number -> *.so file)
+libclists.so : ../src/clists.o libcstructurescommon.so
+	@ echo "Building $@"
+	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.1 -o $@.1.0 $< -lcstructurescommon
+	@ ldconfig -ln $@.1.0
+	@ ln -sf $@.1 $@
+
 libcarrays.so : ../src/carrays.o libcstructurescommon.so
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.1 -o $@.1.0 $< -lcstructurescommon
@@ -28,9 +34,9 @@ libcstructurescommon.so : ../src/cstructurescommon.o
 	@ ldconfig -ln $@.1.0
 	@ ln -sf $@.1 $@
 
-libcstructures.so : ../src/cstructures.o libcstructurescommon.so libcarrays.so
+libcstructures.so : ../src/cstructures.o libcstructurescommon.so libcarrays.so libclists.so
 	@ echo "Building $@"
-	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.2 -o $@.2.1 $< -lcstructurescommon -lcarrays
+	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.2 -o $@.2.1 $< -lcstructurescommon -lcarrays -lclists
 	@ ldconfig -ln $@.2.1
 	@ ln -sf $@.2 $@
 
