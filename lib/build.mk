@@ -16,6 +16,12 @@ lib_b:= libcarrays.so libclists.so libcavl.so libcstructurescommon.so libcstruct
 	@ $(CC) $(CFLAGS) -o $@ -c $<
 
 #libraries compilation and linking (version number -> *.so file)
+libcstructurescommon.so : ../src/cstructurescommon.o
+	@ echo "Building $@"
+	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
+	@ ldconfig -ln $@.1.0
+	@ ln -sf $@.1 $@
+
 libcavl.so : ../src/cavl.o libcstructurescommon.so
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.1 -o $@.1.0 $< -lcstructurescommon
@@ -34,15 +40,9 @@ libcarrays.so : ../src/carrays.o libcstructurescommon.so
 	@ ldconfig -ln $@.1.0
 	@ ln -sf $@.1 $@
 
-libcstructurescommon.so : ../src/cstructurescommon.o
+libcstructures.so : ../src/cstructures.o libcarrays.so libclists.so libcavl.so
 	@ echo "Building $@"
-	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
-	@ ldconfig -ln $@.1.0
-	@ ln -sf $@.1 $@
-
-libcstructures.so : ../src/cstructures.o libcstructurescommon.so libcarrays.so libclists.so libcavl.so
-	@ echo "Building $@"
-	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.2 -o $@.2.1 $< -lcstructurescommon -lcarrays -lclists -lcavl
+	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.2 -o $@.2.1 $< -lcarrays -lclists -lcavl
 	@ ldconfig -ln $@.2.1
 	@ ln -sf $@.2 $@
 
