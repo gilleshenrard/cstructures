@@ -8,18 +8,23 @@ chead:= ../include
 #flags necessary to the compilation
 CC := gcc
 CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
-lib_b:= licstructures.so libdataset_test.so
+lib_b:= libcstructurescommon.so libcstructures.so libdataset_test.so
 
 #objects compilation from the source files
 %.o: %.c
 	@ echo "Building $@"
 	@ $(CC) $(CFLAGS) -o $@ -c $<
 
-
 #libraries compilation and linking (version number -> *.so file)
-libcstructures.so : ../src/cstructures.o
+libcstructurescommon.so : ../src/cstructurescommon.o
 	@ echo "Building $@"
-	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.2 -o $@.2.1 $<
+	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
+	@ ldconfig -ln $@.1.0
+	@ ln -sf $@.1 $@
+
+libcstructures.so : ../src/cstructures.o libcstructurescommon.so
+	@ echo "Building $@"
+	@ $(CC) -shared -fPIC -lc -L. -Wl,-soname,$@.2 -o $@.2.1 $< -lcstructurescommon
 	@ ldconfig -ln $@.2.1
 	@ ln -sf $@.2 $@
 
