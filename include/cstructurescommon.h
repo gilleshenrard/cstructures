@@ -14,6 +14,7 @@
 
 typedef struct dyndata_t dyndata_t;
 
+//struct holding a container element
 struct dyndata_t
 {
     void*       data;
@@ -22,6 +23,7 @@ struct dyndata_t
     dyndata_t*  right;
 };
 
+//container metadata
 typedef struct
 {
     void*       structure;                      //pointer to the root of the whole structure
@@ -32,7 +34,7 @@ typedef struct
     void        (*doPError)(char* msg, ...);    //error printing method (can be ignored if set as NULL)
 } meta_t;
 
-//miscellaneous
+//container elements manipulations
 dyndata_t* allocate_dyn(meta_t* meta, const void* elem);
 int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
