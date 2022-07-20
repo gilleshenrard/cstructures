@@ -102,7 +102,6 @@ int delete_AVL_root(meta_t* meta);
 ### 5. To Do
 * Implement more features on existing containers
 * Implement other containers (queues, stacks, ...)
-* Use separate files for each container
 
 
 ### 6. Known issues
