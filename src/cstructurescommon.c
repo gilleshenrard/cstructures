@@ -1,3 +1,10 @@
+/*
+** cstructurescommon.c
+** Library defining the key elements to handle the cstructures library
+** ---------------------------------------------------
+** Made by Gilles Henrard
+** Last modified : 21/07/2022
+*/
 #include "cstructurescommon.h"
 #include <stdlib.h>
 #include <string.h>

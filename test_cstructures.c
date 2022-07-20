@@ -1,5 +1,5 @@
 /*
-** test_algo.c
+** test_structuresc
 ** Contains all the tests concerning algorithmic features in libcstructures.so
 ** -------------------------------------------
 ** Made by Gilles Henrard

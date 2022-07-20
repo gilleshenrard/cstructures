@@ -1,3 +1,10 @@
+/*
+** clists.c
+** Library implementing the bidirectional lists
+** ---------------------------------------------------
+** Made by Gilles Henrard
+** Last modified : 21/07/2022
+*/
 #include "clists.h"
 #include <stdlib.h>
 #include <string.h>

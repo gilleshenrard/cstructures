@@ -1,3 +1,10 @@
+/*
+** carrays.c
+** Library implementing the arrays
+** ---------------------------------------------------
+** Made by Gilles Henrard
+** Last modified : 21/07/2022
+*/
 #include "carrays.h"
 
 #include <stdlib.h>

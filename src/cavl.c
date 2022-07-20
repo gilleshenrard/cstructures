@@ -1,3 +1,10 @@
+/*
+** cavl.c
+** Library implementing the AVL trees
+** ---------------------------------------------------
+** Made by Gilles Henrard
+** Last modified : 21/07/2022
+*/
 #include "cavl.h"
 
 #include <string.h>
