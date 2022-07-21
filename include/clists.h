@@ -18,6 +18,7 @@ int bubbleSortList(meta_t*, uint32_t);
 //Search algorithms
 void* get_listelem(meta_t* meta, uint32_t i);
 void* find_listelem(meta_t* meta, void*);
+void* find_listelemSorted(meta_t* meta, void*);
 
 //Lists functor
 int foreachList(meta_t*, void*, int (*doAction)(void*, void*));

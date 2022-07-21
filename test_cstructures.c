@@ -418,6 +418,7 @@ int tst_searchlistsorted()
 {
     meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
     meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lisSorted = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
     dataset_t *tmp = NULL, *tmp2 = NULL, tmp3 = {-1, "", -1.0};
 
     printf("/*********************************************************************/\n");
@@ -430,31 +431,56 @@ int tst_searchlistsorted()
         fprintf(stderr, "searchlistsorted : error while allocating the data\n");
         return -1;
     }
-    arrayToList(&arr, &lis, REPLACE);
+    arrayToList(&arr, &lis, COPY);
 
     //display the sorted data
     foreachList(&lis, NULL, Print_dataset);
     printf("----------------------------------------------------------\n");
 
+    //get the 10th list element
     tmp = (dataset_t*)get_listelem(&lis, 10);
     if(tmp){
         printf("Element at index 10 found :\n");
         Print_dataset(tmp, NULL);
     }
 
+    //search for it (non-sorted method)
     tmp2 = (dataset_t*)find_listelem(&lis, tmp);
     if(!tmp2)
         printf("Same element not found with find_listelem\n");
 
+    //search for an element which is not in the list
     tmp2 = (dataset_t*)find_listelem(&lis, &tmp3);
     if(!tmp2)
         printf("Random element not found with find_listelem\n");
 
+    //free the list
     freeDynList(&lis);
 
+    //search for the first element in an empty list
     tmp2 = (dataset_t*)find_listelem(&lis, tmp);
     if(!tmp2)
         printf("First element not found after list emptied\n");
+
+    //sort the array
+    if(quickSortArray(&arr, 0, arr.nbelements-1) == -1){
+        printf("tst_searchlistsorted : error while sorting the array\n");
+        return -1;
+    }
+    arrayToList(&arr, &lisSorted, REPLACE);
+
+    //get the 10th list element
+    tmp = (dataset_t*)get_listelem(&lisSorted, 10);
+    if(tmp){
+        printf("Element at index 10 found :\n");
+        Print_dataset(tmp, NULL);
+    }
+    tmp2 = (dataset_t*)find_listelemSorted(&lisSorted, tmp);
+    if(!tmp2)
+        printf("Same element not found with find_listelem\n");
+
+    //free the list
+    freeDynList(&lisSorted);
 
     return 0;
 }

@@ -123,6 +123,25 @@ void* find_listelem(meta_t* meta, void* toSearch)
 
 /************************************************************/
 /*  I : Metadata necessary to the algorithm                 */
+/*      Element to search                                   */
+/*  P : Search an element in a sorted list                  */
+/*  O : address of the element, NULL if not found           */
+/************************************************************/
+void* find_listelemSorted(meta_t* meta, void* toSearch)
+{
+    dyndata_t *current = (dyndata_t *)meta->structure;
+
+    while(current && (*meta->doCompare)(current->data, toSearch) < 0)
+        current = current->right;
+
+    if(!(*meta->doCompare)(current->data, toSearch))
+        return current;
+    else
+        return NULL;
+}
+
+/************************************************************/
+/*  I : Metadata necessary to the algorithm                 */
 /*      Element to append in the list                       */
 /*  P : Inserts an element at the top of a linked list      */
 /*  O : 0 -> Element added                                  */
