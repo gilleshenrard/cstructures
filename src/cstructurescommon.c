@@ -126,3 +126,29 @@ dyndata_t* getleft(dyndata_t* cur)
     else
         return NULL;
 }
+
+/************************************************************/
+/*  I : Data structure metadata                             */
+/*  P : Get the structure first element                     */
+/*  O : NULL -> no element                                  */
+/*      Otherwise -> address of the first element           */
+/************************************************************/
+dyndata_t* getFirst(const meta_t* meta){
+    if(meta)
+        return (dyndata_t*)meta->structure;
+    else
+        return NULL;
+}
+
+/************************************************************/
+/*  I : Data structure metadata                             */
+/*  P : Get the structure last element                      */
+/*  O : NULL -> no element                                  */
+/*      Otherwise -> address of the last element            */
+/************************************************************/
+dyndata_t* getLast(const meta_t* meta){
+    if(meta)
+        return (dyndata_t*)meta->last;
+    else
+        return NULL;
+}
