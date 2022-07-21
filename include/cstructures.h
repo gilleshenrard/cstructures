@@ -3,6 +3,7 @@
 #include "carrays.h"
 #include "clists.h"
 #include "cavl.h"
+#include "cqueues.h"
 
 //enums
 typedef enum {COPY, REPLACE} e_listtoarray;
