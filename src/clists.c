@@ -227,7 +227,6 @@ int insertListBottom(meta_t* meta, void *toAdd){
     {
         //list empty, element becomes the head
         meta->structure = newElement;
-        meta->last = newElement;
     }
     else
     {
@@ -235,11 +234,11 @@ int insertListBottom(meta_t* meta, void *toAdd){
 
         //chain up the new element at the end
         newElement->left = meta->last;
-        meta->last = newElement;
     }
 
     //increment the elements counter
     meta->nbelements++;
+    meta->last = newElement;
 
     return 0;
 }
@@ -274,6 +273,8 @@ int popListTop(meta_t* meta){
 
     //update the number of elements
     meta->nbelements--;
+    if(!meta->nbelements)
+        meta->last = NULL;
 
     return 0;
 }
@@ -308,6 +309,8 @@ int popListBottom(meta_t* meta){
 
     //update the number of elements
     meta->nbelements--;
+    if(!meta->nbelements)
+        meta->last = NULL;
 
     return 0;
 }
@@ -348,6 +351,8 @@ int insertListSorted(meta_t *meta, void* toAdd){
     //chain new element
     previous->right = newElement;
     newElement->right = current;
+    if(!current)
+        meta->last = newElement;
 
     //update the element count
     meta->nbelements++;
@@ -395,6 +400,8 @@ int removeListSorted(meta_t *meta, void *elem){
 
         //decrement the amount of elements
         meta->nbelements--;
+        if(!meta->nbelements)
+            meta->last = NULL;
     }
 
     return 0;
@@ -424,6 +431,7 @@ int freeDynList(meta_t* meta)
     }
 
     meta->structure = NULL;
+    meta->last = NULL;
 
     return 0;
 }
