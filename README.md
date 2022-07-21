@@ -4,7 +4,7 @@
 ### 1. Intro
 This library aims to provide basic OOP containers for C applications.
 
-For now, only vectors (arrays), bidirectional lists and AVL trees are implemented.
+For now, only vectors (arrays), bidirectional lists, non-priority queues and AVL trees are implemented.
 
 Each element of the containers is encased in the dyndata_t structure, and the containers use the meta_t structure to function.
 
@@ -86,6 +86,12 @@ int freeDynList(meta_t* meta);
 int foreachList(meta_t*, void*, int (*doAction)(void*, void*));
 ```
 
+* Queues :
+```C
+int pushQueue(meta_t*,  const void*);
+void* popQueue(meta_t* meta);
+```
+
 * AVL trees :
 ```C
 dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd);
@@ -101,7 +107,7 @@ int delete_AVL_root(meta_t* meta);
 
 ### 5. To Do
 * Implement more features on existing containers
-* Implement other containers (queues, stacks, ...)
+* Implement other containers (stacks, ...)
 
 
 ### 6. Known issues
