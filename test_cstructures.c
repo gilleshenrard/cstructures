@@ -3,7 +3,7 @@
 ** Contains all the tests concerning algorithmic features in libcstructures.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 07/11/2020
+** Last modified : 21/07/2022
 */
 #include <time.h>
 #include <stdlib.h>
@@ -17,6 +17,7 @@ int tst_binarysearcharray(void);
 int tst_inserttoplist(void);
 int tst_insertbottomlist(void);
 int tst_insertlistsorted(void);
+int tst_searchlistsorted(void);
 int tst_removelistsorted(void);
 int tst_bubblesortlist(void);
 int tst_structuresconversion(void);
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
     tst_inserttoplist();
     tst_insertbottomlist();
     tst_insertlistsorted();
+    tst_searchlistsorted();
     tst_removelistsorted();
     tst_bubblesortlist();
     tst_structuresconversion();
@@ -401,6 +403,58 @@ int tst_insertlistsorted()
     freeDynList(&lis);
 
     empty_array(&arr);
+
+    return 0;
+}
+
+
+/************************************************************/
+/*  I : /                                                   */
+/*  P : Tests out the research in a sorted list             */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_searchlistsorted()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t lis = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+    dataset_t *tmp = NULL, *tmp2 = NULL, tmp3 = {-1, "", -1.0};
+
+    printf("/*********************************************************************/\n");
+    printf("/********************* tst_searchlistsorted **************************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "searchlistsorted : error while allocating the data\n");
+        return -1;
+    }
+    arrayToList(&arr, &lis, REPLACE);
+
+    //display the sorted data
+    foreachList(&lis, NULL, Print_dataset);
+    printf("----------------------------------------------------------\n");
+
+    tmp = (dataset_t*)get_listelem(&lis, 10);
+    if(tmp){
+        printf("Element at index 10 found :\n");
+        Print_dataset(tmp, NULL);
+    }
+
+    tmp2 = (dataset_t*)find_listelem(&lis, tmp);
+    if(!tmp2)
+        printf("Same element not found with find_listelem\n");
+
+    tmp2 = (dataset_t*)find_listelem(&lis, &tmp3);
+    if(!tmp2)
+        printf("Random element not found with find_listelem\n");
+
+    freeDynList(&lis);
+
+    tmp2 = (dataset_t*)find_listelem(&lis, tmp);
+    if(!tmp2)
+        printf("First element not found after list emptied\n");
 
     return 0;
 }

@@ -107,6 +107,22 @@ void* get_listelem(meta_t* meta, uint32_t i)
 
 /************************************************************/
 /*  I : Metadata necessary to the algorithm                 */
+/*      Element to search                                   */
+/*  P : Search an element in a non-sorted list              */
+/*  O : address of the element, NULL if not found           */
+/************************************************************/
+void* find_listelem(meta_t* meta, void* toSearch)
+{
+    dyndata_t *current = (dyndata_t *)meta->structure;
+
+    while(current && (*meta->doCompare)(current->data, toSearch))
+        current = current->right;
+
+    return current;
+}
+
+/************************************************************/
+/*  I : Metadata necessary to the algorithm                 */
 /*      Element to append in the list                       */
 /*  P : Inserts an element at the top of a linked list      */
 /*  O : 0 -> Element added                                  */
@@ -387,6 +403,8 @@ int freeDynList(meta_t* meta)
         next = next->right;
         free_dyn(current);
     }
+
+    meta->structure = NULL;
 
     return 0;
 }
