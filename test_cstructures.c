@@ -24,6 +24,7 @@ int tst_structuresconversion(void);
 int tst_insertavl(void);
 int tst_removeavl(void);
 int tst_searchavl(void);
+int tst_insertqueue(void);
 
 #ifdef __GNUC__
 # pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     tst_insertavl();
     tst_removeavl();
     tst_searchavl();
+    tst_insertqueue();
 
 	exit(EXIT_SUCCESS);
 }
@@ -757,6 +759,53 @@ int tst_searchavl()
     empty_array(&arr);
     while(avl.structure)
         delete_AVL_root(&avl);
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : /                                                   */
+/*  P : Tests out the insertion in a queue                  */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_insertqueue()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t queue = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+
+    printf("/*********************************************************************/\n");
+    printf("/************************** tst_insertqueue **************************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "insertTopList : error while allocating the data\n");
+        return -1;
+    }
+
+    //display the sorted data
+    foreachArray(&arr, NULL, Print_dataset);
+    printf("----------------------------------------------------------\n");
+
+    printf("Insert all array elements in queue :\n");
+    for(uint32_t i = 0 ; i < arr.nbelements ; i++)
+        pushQueue(&queue, get_arrayelem(&arr, i));
+
+    foreachQueue(&queue, NULL, Print_dataset);
+
+    printf("Pop elements from queue, one by one :\n");
+    while(queue.nbelements){
+        Print_dataset(getdata(popQueue(&queue)), NULL);
+    }
+
+    if(queue.nbelements)
+        printf("tst_insertqueue : Error : %u elements remaining in the queue", queue.nbelements);
+    else
+        printf("tst_insertqueue : All elements properly popped from the queue");
+
+    empty_array(&arr);
 
     return 0;
 }

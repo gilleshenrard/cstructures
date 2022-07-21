@@ -101,3 +101,42 @@ void* popQueue(meta_t* meta){
 
     return tmp;
 }
+
+/************************************************************/
+/*  I : Metadata necessary to the algorithm                 */
+/*      Parameter for the action to perform                 */
+/*      Action to perform                                   */
+/*  P : Performs an action on every element of the queue    */
+/*  O : 0 -> OK                                             */
+/*     -1 -> Error                                          */
+/************************************************************/
+int foreachQueue(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
+    dyndata_t *next = NULL, *current=NULL;
+
+    if(!meta)
+        return -1;
+
+    if(!doAction)
+    {
+        if(meta->doPError)
+            (*meta->doPError)("foreachQueue: action to perform not defined");
+
+        return -1;
+    }
+
+    next = meta->structure;
+
+    while(next){
+        current = next;
+        next = next->right;
+        if((*doAction)(current->data, parameter) < 0)
+        {
+            if(meta->doPError)
+                (*meta->doPError)("foreachQueue: action specified returned with an error");
+
+            return -1;
+        }
+    }
+
+    return 0;
+}
