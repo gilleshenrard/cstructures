@@ -40,5 +40,6 @@ int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
 void* getdata(dyndata_t* cur);
 dyndata_t* getright(dyndata_t* cur);
+dyndata_t* getleft(dyndata_t* cur);
 
 #endif // CSTRUCTURESCOMMON_H_INCLUDED

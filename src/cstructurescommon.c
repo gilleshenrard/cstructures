@@ -112,3 +112,17 @@ dyndata_t* getright(dyndata_t* cur)
     else
         return NULL;
 }
+
+/************************************************************/
+/*  I : Element of which get the prev. one in the structure */
+/*  P : Returns the address of the previous element         */
+/*  O : NULL -> no element to the left                      */
+/*      Otherwise -> address of the previous element        */
+/************************************************************/
+dyndata_t* getleft(dyndata_t* cur)
+{
+    if(cur)
+        return cur->left;
+    else
+        return NULL;
+}
