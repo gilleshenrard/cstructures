@@ -4,6 +4,7 @@
 #include "clists.h"
 #include "cavl.h"
 #include "cqueues.h"
+#include "cstacks.h"
 
 //enums
 typedef enum {COPY, REPLACE} e_listtoarray;
