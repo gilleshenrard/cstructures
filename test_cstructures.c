@@ -7,6 +7,7 @@
 */
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "cstructures.h"
 #include "dataset_test.h"
 
@@ -25,6 +26,7 @@ int tst_insertavl(void);
 int tst_removeavl(void);
 int tst_searchavl(void);
 int tst_insertqueue(void);
+int tst_insertPriorityQueue(void);
 int tst_insertstack(void);
 
 #ifdef __GNUC__
@@ -48,6 +50,7 @@ int main(int argc, char *argv[])
     tst_removeavl();
     tst_searchavl();
     tst_insertqueue();
+    tst_insertPriorityQueue();
     tst_insertstack();
 
 	exit(EXIT_SUCCESS);
@@ -806,6 +809,53 @@ int tst_insertqueue()
         printf("tst_insertqueue : Error : %u elements remaining in the queue", queue.nbelements);
     else
         printf("tst_insertqueue : All elements properly popped from the queue");
+
+    empty_array(&arr);
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : /                                                   */
+/*  P : Tests out the insertion in a priority queue         */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_insertPriorityQueue()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t queue = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset_int, NULL};
+
+    printf("/*********************************************************************/\n");
+    printf("/********************* tst_insertPriorityQueue ***********************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "tst_insertPriorityQueue : error while allocating the data\n");
+        return -1;
+    }
+
+    //display the sorted data
+    foreachArray(&arr, NULL, Print_dataset);
+    printf("----------------------------------------------------------\n");
+
+    printf("Insert all array elements in priorityqueue :\n");
+    for(uint32_t i = 0 ; i < arr.nbelements ; i++)
+        pushPriorityQueue(&queue, get_arrayelem(&arr, i));
+
+    foreachQueue(&queue, NULL, Print_dataset);
+
+    printf("Pop elements from queue, one by one :\n");
+    while(queue.nbelements){
+        Print_dataset(getdata(popQueue(&queue)), NULL);
+    }
+
+    if(queue.nbelements)
+        printf("tst_insertPriorityQueue : Error : %u elements remaining in the queue", queue.nbelements);
+    else
+        printf("tst_insertPriorityQueue : All elements properly popped from the queue");
 
     empty_array(&arr);
 

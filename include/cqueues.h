@@ -4,6 +4,7 @@
 
 //queues manipulations
 int pushQueue(meta_t*,  const void*);
+int pushPriorityQueue(meta_t*,  const void*);
 void* popQueue(meta_t* meta);
 
 //queues functors
