@@ -20,12 +20,7 @@ int pushQueue(meta_t *meta,  const void *toAdd){
 
     //check if meta data available
     if(!meta)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("pushQueue: queue metadata or mandatory function not defined");
-
         return -1;
-    }
 
     //check if element added is available
     if(!toAdd)
@@ -75,12 +70,7 @@ void* popQueue(meta_t* meta){
 
     //check if meta data available
     if(!meta)
-    {
-        if(meta->doPError)
-            (*meta->doPError)("popQueue: queue metadata or mandatory function not defined");
-
         return NULL;
-    }
 
     //get the first element of the queue
     tmp = meta->structure;
