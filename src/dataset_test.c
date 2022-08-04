@@ -1,4 +1,6 @@
 #include "dataset_test.h"
+#include <string.h>
+#include <stdio.h>
 
 /****************************************************************************************/
 /*  I : dataset record to print                                                         */
@@ -41,7 +43,7 @@ char* toString_dataset(void* elem)
 /*       0 if A = B                                                                     */
 /*      -1 if A < B                                                                     */
 /****************************************************************************************/
-int compare_dataset(void* a, void* b)
+int compare_dataset(const void* a, const void* b)
 {
     dataset_t* A=(dataset_t*)a, *B=(dataset_t*)b;
 
@@ -61,7 +63,7 @@ int compare_dataset(void* a, void* b)
 /*       0 if A = B                                                                     */
 /*      -1 if A < B                                                                     */
 /****************************************************************************************/
-int compare_dataset_int(void* a, void* b)
+int compare_dataset_int(const void* a, const void* b)
 {
     dataset_t* A = (dataset_t*)a;
     int* B = (int*)b;

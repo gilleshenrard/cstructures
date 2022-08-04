@@ -30,7 +30,7 @@ typedef struct
     dyndata_t*  last;                           //highest element in the structure
     uint32_t    nbelements;                     //number of elements in the structure
     uint32_t    elementsize;                    //size of a core element (actual data without algorithmic overlay)
-    int         (*doCompare)(void*, void*);     //comparison method
+    int         (*doCompare)(const void*, const void*);     //comparison method
     void        (*doPError)(char* msg, ...);    //error printing method (can be ignored if set as NULL)
 } meta_t;
 
