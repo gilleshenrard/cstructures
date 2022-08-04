@@ -67,7 +67,7 @@ int pushQueue(meta_t *meta,  const void *toAdd){
 /*     -1 -> Error                                          */
 /************************************************************/
 int pushPriorityQueue(meta_t *meta,  const void *toAdd){
-    dyndata_t *newElement = NULL, *tmp = NULL;
+    dyndata_t *newElement = NULL, *tmp = NULL, *tmp2=NULL;
 
     //check if meta data available
     if(!meta)
@@ -91,26 +91,39 @@ int pushPriorityQueue(meta_t *meta,  const void *toAdd){
     }
 
     //if no element
-    if(!meta->structure)
-        return pushQueue(meta, toAdd);
-
-    //if element has highest priority
-    if((*meta->doCompare)(toAdd, meta->structure) < 0){
-        newElement->right = meta->structure;
-        ((dyndata_t*)meta->structure)->left = newElement;
+    if(!meta->structure){
+        meta->nbelements = 1;
+        meta->last = newElement;
         meta->structure = newElement;
+
+        return 0;
     }
 
-    //browse queue from last element until higher priority
-    tmp = meta->last;
-    while((*meta->doCompare)(toAdd, tmp) < 0)
-        tmp = tmp->left;
+    tmp = (dyndata_t*)meta->structure;
 
-    //chain the element to its place in the queue, with regard to priority
-    newElement->left = tmp;
-    tmp->right = newElement;
-    if(tmp == meta->last)
-        meta->last = newElement;
+    //if element has highest priority
+    if((*meta->doCompare)(newElement->data, tmp->data) > 0){
+        newElement->right = meta->structure;
+        tmp->left = newElement;
+        meta->structure = newElement;
+    }
+    else{
+        //browse queue from last element until higher priority
+        tmp = meta->last;
+        while((*meta->doCompare)(newElement->data, tmp->data) > 0){
+            tmp2 = tmp;
+            tmp = tmp->left;
+        }
+
+        //chain the element to its place in the queue, with regard to priority
+        newElement->right = tmp2;
+        newElement->left = tmp;
+        tmp->right = newElement;
+        if(tmp2)
+            tmp2->left = newElement;
+        if(tmp == meta->last)
+            meta->last = newElement;
+    }
 
     //increment the amount of elements
     meta->nbelements++;
