@@ -3,7 +3,7 @@
 ** Contains all the tests concerning algorithmic features in libcstructures.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 21/07/2022
+** Last modified : 04/08/2022
 */
 #include <time.h>
 #include <stdlib.h>
@@ -25,6 +25,7 @@ int tst_insertavl(void);
 int tst_removeavl(void);
 int tst_searchavl(void);
 int tst_insertqueue(void);
+int tst_insertstack(void);
 
 #ifdef __GNUC__
 # pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
     tst_removeavl();
     tst_searchavl();
     tst_insertqueue();
+    tst_insertstack();
 
 	exit(EXIT_SUCCESS);
 }
@@ -781,7 +783,7 @@ int tst_insertqueue()
     //generate 20 random datasets
     if(setup_data((dataset_t**)&arr.structure, 20) == -1)
     {
-        fprintf(stderr, "insertTopList : error while allocating the data\n");
+        fprintf(stderr, "tst_insertqueue : error while allocating the data\n");
         return -1;
     }
 
@@ -804,6 +806,53 @@ int tst_insertqueue()
         printf("tst_insertqueue : Error : %u elements remaining in the queue", queue.nbelements);
     else
         printf("tst_insertqueue : All elements properly popped from the queue");
+
+    empty_array(&arr);
+
+    return 0;
+}
+
+/************************************************************/
+/*  I : /                                                   */
+/*  P : Tests out the insertion in a stack                  */
+/*  O :  0 -> Success                                       */
+/*      -1 -> Error                                         */
+/************************************************************/
+int tst_insertstack()
+{
+    meta_t arr = {NULL, NULL, 20, sizeof(dataset_t), compare_dataset, NULL};
+    meta_t stack = {NULL, NULL, 0, sizeof(dataset_t), compare_dataset, NULL};
+
+    printf("/*********************************************************************/\n");
+    printf("/************************** tst_insertstack **************************/\n");
+    printf("/*********************************************************************/\n");
+
+    //generate 20 random datasets
+    if(setup_data((dataset_t**)&arr.structure, 20) == -1)
+    {
+        fprintf(stderr, "tst_insertstack : error while allocating the data\n");
+        return -1;
+    }
+
+    //display the sorted data
+    foreachArray(&arr, NULL, Print_dataset);
+    printf("----------------------------------------------------------\n");
+
+    printf("Insert all array elements in stack :\n");
+    for(uint32_t i = 0 ; i < arr.nbelements ; i++)
+        pushStack(&stack, get_arrayelem(&arr, i));
+
+    foreachStack(&stack, NULL, Print_dataset);
+
+    printf("Pop elements from stack, one by one :\n");
+    while(stack.nbelements){
+        Print_dataset(getdata(popStack(&stack)), NULL);
+    }
+
+    if(stack.nbelements)
+        printf("tst_insertstack : Error : %u elements remaining in the stack", stack.nbelements);
+    else
+        printf("tst_insertstack : All elements properly popped from the stack");
 
     empty_array(&arr);
 
