@@ -806,9 +806,9 @@ int tst_insertqueue()
     }
 
     if(queue.nbelements)
-        printf("tst_insertqueue : Error : %u elements remaining in the queue", queue.nbelements);
+        printf("tst_insertqueue : Error : %u elements remaining in the queue\n", queue.nbelements);
     else
-        printf("tst_insertqueue : All elements properly popped from the queue");
+        printf("tst_insertqueue : All elements properly popped from the queue\n");
 
     empty_array(&arr);
 
@@ -853,9 +853,9 @@ int tst_insertPriorityQueue()
     }
 
     if(queue.nbelements)
-        printf("tst_insertPriorityQueue : Error : %u elements remaining in the queue", queue.nbelements);
+        printf("tst_insertPriorityQueue : Error : %u elements remaining in the queue\n", queue.nbelements);
     else
-        printf("tst_insertPriorityQueue : All elements properly popped from the queue");
+        printf("tst_insertPriorityQueue : All elements properly popped from the queue\n");
 
     empty_array(&arr);
 
@@ -900,9 +900,9 @@ int tst_insertstack()
     }
 
     if(stack.nbelements)
-        printf("tst_insertstack : Error : %u elements remaining in the stack", stack.nbelements);
+        printf("tst_insertstack : Error : %u elements remaining in the stack\n", stack.nbelements);
     else
-        printf("tst_insertstack : All elements properly popped from the stack");
+        printf("tst_insertstack : All elements properly popped from the stack\n");
 
     empty_array(&arr);
 
