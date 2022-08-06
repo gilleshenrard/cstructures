@@ -3,13 +3,14 @@
 ** Contains all the tests concerning algorithmic features in libcstructures.so
 ** -------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 04/08/2022
+** Last modified : 06/08/2022
 */
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "cstructures.h"
 #include "dataset_test.h"
+#include "screen.h"
 
 int setup_data(dataset_t** data, uint32_t nb);
 int tst_bubblesortarray(void);
@@ -103,7 +104,7 @@ int tst_bubblesortarray()
     printf("/******************************************************************/\n");
 
     //initialise the array
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -163,7 +164,7 @@ int tst_quicksortarray()
     printf("/******************************************************************/\n");
 
     //initialise the array
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 100000;
 
     //generate 100000 random datasets
@@ -227,7 +228,7 @@ int tst_binarysearcharray()
     printf("/*********************************************************************/\n");
 
     //initialise the array
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -286,8 +287,8 @@ int tst_inserttoplist()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -344,8 +345,8 @@ int tst_insertbottomlist()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -402,8 +403,8 @@ int tst_insertlistsorted()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -455,8 +456,8 @@ int tst_searchlistsorted()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     initialise_structure(&lisSorted, sizeof(meta_t), compare_dataset, NULL);
     arr.nbelements = 20;
 
@@ -535,8 +536,8 @@ int tst_removelistsorted()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -590,8 +591,8 @@ int tst_bubblesortlist()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -648,8 +649,8 @@ int tst_structuresconversion()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&lis, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&lis, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -708,8 +709,8 @@ int tst_insertavl()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&avl, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&avl, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -747,8 +748,8 @@ int tst_removeavl()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&avl, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&avl, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -791,8 +792,8 @@ int tst_searchavl()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&avl, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&avl, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -835,8 +836,8 @@ int tst_insertqueue()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&queue, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&queue, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -886,8 +887,8 @@ int tst_insertPriorityQueue()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&queue, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&queue, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets
@@ -937,8 +938,8 @@ int tst_insertstack()
     printf("/*********************************************************************/\n");
 
     //initialise the structures
-    initialise_structure(&arr, sizeof(meta_t), compare_dataset, NULL);
-    initialise_structure(&stack, sizeof(meta_t), compare_dataset, NULL);
+    initialise_structure(&arr, sizeof(meta_t), compare_dataset, printError);
+    initialise_structure(&stack, sizeof(meta_t), compare_dataset, printError);
     arr.nbelements = 20;
 
     //generate 20 random datasets

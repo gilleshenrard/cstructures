@@ -6,12 +6,12 @@ cbin := bin
 #flags necessary to the compilation
 CC := gcc
 CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
-LFLAGS:= -ldataset_test -lcarrays -lclists -lcavl -lcqueues -lcstacks -lcstructures -lcstructurescommon
+LFLAGS:= -ldataset_test -lcarrays -lclists -lcavl -lcqueues -lcstacks -lcstructures -lcstructurescommon -lscreen
 LDFLAGS:= -Wl,--disable-new-dtags -Wl,-rpath,\$$ORIGIN/../lib
 
 
 #executables compilation
-test_cstructures: bcstructures bdata
+test_cstructures: bcstructures bdata bscreen
 	@ echo "Builing $@"
 	@ mkdir -p $(cbin)
 	@ $(CC) $(CFLAGS) -L$(clib) $(LDFLAGS) -o $(cbin)/$@ $@.c $(LFLAGS)
@@ -25,6 +25,10 @@ bcstructures:
 .PHONY: bdata
 bdata:
 	@ $(MAKE) -f build.mk -C$(clib) libdataset_test.so
+
+.PHONY: bscreen
+bscreen:
+	@ $(MAKE) -f build.mk -C$(clib) libscreen.so
 
 .PHONY: clean
 clean:

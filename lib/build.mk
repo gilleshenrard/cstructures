@@ -8,7 +8,7 @@ chead:= ../include
 #flags necessary to the compilation
 CC := gcc
 CFLAGS:= -fPIC -Wall -Werror -Wextra -g -I$(chead)
-lib_b:= libcarrays.so libclists.so libcavl.so libcstructurescommon.so libcstructures.so libcqueues.so libcstacks.so libdataset_test.so
+lib_b:= libcarrays.so libclists.so libcavl.so libcstructurescommon.so libcstructures.so libcqueues.so libcstacks.so libdataset_test.so libscreen.so
 
 #objects compilation from the source files
 %.o: %.c
@@ -59,6 +59,12 @@ libcstructures.so : ../src/cstructures.o libcarrays.so libclists.so libcavl.so l
 	@ ln -sf $@.2 $@
 
 libdataset_test.so : ../src/dataset_test.o
+	@ echo "Building $@"
+	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
+	@ ldconfig -ln $@.1.0
+	@ ln -sf $@.1 $@
+
+libscreen.so : ../src/screen.o
 	@ echo "Building $@"
 	@ $(CC) -shared -fPIC -lc -Wl,-soname,$@.1 -o $@.1.0 $<
 	@ ldconfig -ln $@.1.0
