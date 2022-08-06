@@ -3,11 +3,26 @@
 ** Library defining the key elements to handle the cstructures library
 ** ---------------------------------------------------
 ** Made by Gilles Henrard
-** Last modified : 21/07/2022
+** Last modified : 06/08/2022
 */
 #include "cstructurescommon.h"
 #include <stdlib.h>
 #include <string.h>
+
+/************************************************************/
+/*  I : Metadata of the element to allocate                 */
+/*      Size of an element in the structure                 */
+/*  P : Initialise the structure to 0 and set the received  */
+/*          fields                                          */
+/*  O : /                                                   */
+/************************************************************/
+void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(char* msg, ...))
+{
+    memset(meta, 0, sizeof(meta_t));
+    meta->elementsize = elementSize;
+    meta->doCompare = compare;
+    meta->doPError = printError;
+}
 
 /************************************************************/
 /*  I : Metadata of the element to allocate                 */

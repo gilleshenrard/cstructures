@@ -35,6 +35,7 @@ typedef struct
 } meta_t;
 
 //container elements manipulations
+void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(char* msg, ...));
 dyndata_t* allocate_dyn(meta_t* meta, const void* elem);
 int free_dyn(dyndata_t* elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);
