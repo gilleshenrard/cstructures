@@ -106,17 +106,16 @@ void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(
 
     offset_max = ++offset > offset_max ? offset : offset_max;
 
-    if(avl){
-        display_AVL_tree(meta, avl->right, 'R', toString, doPrint);
+    display_AVL_tree(meta, avl->right, 'R', toString, doPrint);
 
-        nbc_pad = LG_MAX - (3 * offset) - strlen((*toString)(avl->data));
-        for (int i=0;i<nbc_pad;i++)
-            strcat(tmp,".");
-        strcat(tmp,(*toString)(avl->data));
-        (*doPrint)("%*c%c %s  (H-%d)  L-%14p  T-%14p  R-%14p\n", 3*offset, '-', dir, tmp, height, (void*)avl->left, (void*)avl, (void*)avl->right);
+    nbc_pad = LG_MAX - (3 * offset) - strlen((*toString)(avl->data));
+    for (int i=0;i<nbc_pad;i++)
+        strcat(tmp,".");
+    strcat(tmp,(*toString)(avl->data));
+    (*doPrint)("%*c%c %s  (H-%d)  L-%14p  T-%14p  R-%14p\n", 3*offset, '-', dir, tmp, height, (void*)avl->left, (void*)avl, (void*)avl->right);
 
-        display_AVL_tree(meta, avl->left, 'L', toString, doPrint);
-    }
+    display_AVL_tree(meta, avl->left, 'L', toString, doPrint);
+
     offset--;
 }
 
