@@ -63,5 +63,8 @@ bin
 #CMake files
 build/
 
+#Doxygen files
+doxygen/
+
 # test files
 data/

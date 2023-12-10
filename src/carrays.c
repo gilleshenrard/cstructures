@@ -1,9 +1,9 @@
-/********************************************************
+/**
  * @file carrays.c
  * @brief Implements generic arrays
  * @author Gilles Henrard
  * @date 2023-12-10
-********************************************************/
+**/
 #include "carrays.h"
 #include <stdlib.h>
 #include <string.h>
@@ -16,14 +16,14 @@ static uint32_t quickSortPartitioning(meta_t*, uint32_t, uint32_t);
 /*********************************************************************************************/
 
 
-/********************************************************
+/**
  * @brief Get an element of the array
  * 
  * @param meta  Metadata used by the array
  * @param i     Index of the element to get
  * @return      Array element
  * @retval NULL Element not found
-********************************************************/
+**/
 void* get_arrayelem(meta_t* meta, uint32_t i)
 {
     if(i >= meta->nbelements)
@@ -37,7 +37,7 @@ void* get_arrayelem(meta_t* meta, uint32_t i)
         return ((uint8_t*)meta->structure) + (meta->elementsize * i);
 }
 
-/********************************************************
+/**
  * @brief Assign a value to an element of the array
  * 
  * @param meta  Metadata used by the array
@@ -45,7 +45,7 @@ void* get_arrayelem(meta_t* meta, uint32_t i)
  * @param elem  Element to assign
  * @retval 0    OK
  * @retval -1   Error
-********************************************************/
+**/
 int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
 {
     if(i >= meta->nbelements)
@@ -60,12 +60,12 @@ int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
     return 0;
 }
 
-/********************************************************
+/**
  * @brief Free the memory occupied by the whole array
  * 
  * @param meta  Metadata used by the array
  * @return 0
-********************************************************/
+**/
 int empty_array(meta_t* meta){
     //free the array itself
     free(meta->structure);
@@ -78,14 +78,14 @@ int empty_array(meta_t* meta){
     return 0;
 }
 
-/********************************************************
+/**
  * @brief Sorts the array using the Bubble Sort algorithm
  * 
  * @param meta  Metadata used by the array
  * @param nb    Number of elements to sort at the end of the array
  * @retval 0    OK
  * @retval -1   Error
-********************************************************/
+**/
 int bubbleSortArray(meta_t *meta, uint32_t nb){
     void *current=NULL, *next=NULL;
     void* tmp = NULL;
@@ -128,14 +128,14 @@ int bubbleSortArray(meta_t *meta, uint32_t nb){
     return 0;
 }
 
-/********************************************************
+/**
  * @brief Sort the partitions provided by the Quick Sort algorithm
  * 
  * @param meta  Metadata used by the array
  * @param low   Lowest element of the partition
  * @param high  Highest element of the partition
  * @return      New pivot
-********************************************************/
+**/
 static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high){
     void* pivotElem = NULL, *elem_i=NULL, *elem_j=NULL, *tmp = NULL;
     uint32_t i = 0;
@@ -180,7 +180,7 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
     return(i+1);
 }
 
-/********************************************************
+/**
  * @brief Sort the provided array using the Quick Sort algorithm
  * 
  * @param meta  Metadata used by the array
@@ -188,7 +188,7 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
  * @param high  Highest index in the array (last element)
  * @retval 0    OK
  * @retval -1   Error
-********************************************************/
+**/
 int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
     uint32_t diffLow, diffHigh;
 
@@ -233,7 +233,7 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
     return 0;
 }
 
-/********************************************************
+/**
  * @brief Search an element using the Binary Search algorithm
  * 
  * @param meta      Metadata used by the array
@@ -241,7 +241,7 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
  * @param scope     Scope of the search (first occurence or any occurrence)
  * @return          Index of the occurence found in the array
  * @retval -1       Not found
-********************************************************/
+**/
 int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
     int i = 0, j = (meta->nbelements - 1), index = -1;
     void *current = NULL;
@@ -272,7 +272,7 @@ int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
     return index;
 }
 
-/********************************************************
+/**
  * @brief Perform an action on each element of the array
  * 
  * @param meta      Metadata used by the array
@@ -280,7 +280,7 @@ int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
  * @param doAction  Action to perform
  * @retval 0        OK
  * @retval -1       Error
-********************************************************/
+**/
 int foreachArray(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     void* tmp = NULL;
 

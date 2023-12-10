@@ -1,16 +1,6 @@
 #ifndef CSTRUCTURESCOMMON_H_INCLUDED
 #define CSTRUCTURESCOMMON_H_INCLUDED
-#include <inttypes.h>
-
-/*
-* NOTE about data structures:
-* when dealing with arrays, <meta_t>.structure can direcly be set with a previously generated array.
-* when dealing with AVL trees or dynamic lists, dyndata_t elements will be automatically generated,
-*       and are not to be handled by the user
-*
-* NOTE about error printing:
-* if doPError is set as NULL, error printing will be ignored
-*/
+#include <stdint.h>
 
 /********************************************************
  * @brief Forward-declaration of dyndata_t structures
