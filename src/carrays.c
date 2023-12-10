@@ -27,7 +27,7 @@ void* get_arrayelem(meta_t* meta, uint32_t i)
         return NULL;
     }
     else
-        return meta->structure+(meta->elementsize * i);
+        return ((uint8_t*)meta->structure) + (meta->elementsize * i);
 }
 
 /************************************************************/
@@ -49,7 +49,7 @@ int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
         return -1;
     }
 
-    memcpy(meta->structure+(meta->elementsize * i), elem, meta->elementsize);
+    memcpy(((uint8_t*)meta->structure) + (meta->elementsize * i), elem, meta->elementsize);
     return 0;
 }
 

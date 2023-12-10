@@ -304,7 +304,7 @@ int tst_inserttoplist()
 
     for(int i=0 ; i<20 ; i++)
     {
-        if(insertListTop(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        if(insertListTop(&lis, ((uint8_t*)arr.structure) + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertTopList : error while inserting the data\n");
             empty_array(&arr);
@@ -362,7 +362,7 @@ int tst_insertbottomlist()
 
     for(int i=0 ; i<20 ; i++)
     {
-        if(insertListBottom(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        if(insertListBottom(&lis, ((uint8_t*)arr.structure) + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertBottomList : error while inserting the data\n");
             empty_array(&arr);
@@ -420,7 +420,7 @@ int tst_insertlistsorted()
 
     for(int i=0 ; i<20 ; i++)
     {
-        if(insertListSorted(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        if(insertListSorted(&lis, ((uint8_t*)arr.structure) + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertListSorted : error while inserting the data\n");
             empty_array(&arr);
@@ -551,7 +551,7 @@ int tst_removelistsorted()
     printf("----------------------------------------------------------\n");
     for(int i=0 ; i<20 ; i++)
     {
-        if(insertListSorted(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        if(insertListSorted(&lis, ((uint8_t*)arr.structure) + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "removelistsorted : error while inserting the data\n");
             empty_array(&arr);
@@ -608,7 +608,7 @@ int tst_bubblesortlist()
 
     for(int i=0 ; i<20 ; i++)
     {
-        if(insertListTop(&lis, arr.structure + i*sizeof(dataset_t)) == -1)
+        if(insertListTop(&lis, ((uint8_t*)arr.structure) + i*sizeof(dataset_t)) == -1)
         {
             fprintf(stderr, "insertTopList : error while inserting the data\n");
             empty_array(&arr);
