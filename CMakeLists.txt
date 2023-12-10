@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED 23)
 #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -Werror")
 
-add_executable(test_cstructures test_cstructures.c)
+add_executable(${PROJECT_NAME} ${PROJECT_NAME}.c)
 add_subdirectory(src)
 target_include_directories(${PROJECT_NAME} PUBLIC
                           "${PROJECT_BINARY_DIR}"
