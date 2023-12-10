@@ -6,8 +6,9 @@
 ** Last modified : 21/07/2022
 */
 #include "cavl.h"
-
 #include <string.h>
+
+int offset, offset_max;
 
 /************************************************************/
 /*  I : Metadata necessary to the algorithm                 */

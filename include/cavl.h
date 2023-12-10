@@ -3,7 +3,6 @@
 #include "cstructurescommon.h"
 
 //variables and consts used in AVL display
-int offset, offset_max;
 #define LG_MAX 36
 
 //enum used in AVL rotation
