@@ -4,8 +4,6 @@
  * @author Gilles Henrard
  * @date 2023-12-10
 ********************************************************/
-
-
 #include "carrays.h"
 #include <stdlib.h>
 #include <string.h>
