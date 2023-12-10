@@ -60,5 +60,8 @@ bin
 *.depend
 *.layout
 
+#CMake files
+build/
+
 # test files
 data/
