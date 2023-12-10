@@ -266,7 +266,7 @@ int popListTop(meta_t* meta){
 
     //free and rechain
     //  note : free() takes a void pointer anyway, so no need to cast
-    free_dyn(head);
+    free_dyn(&head);
     if(second && second->left)
         second->left = NULL;
     meta->structure = second;
@@ -302,7 +302,7 @@ int popListBottom(meta_t* meta){
 
     //free and rechain
     //  note : free() takes a void pointer anyway, so no need to cast
-    free_dyn(tail);
+    free_dyn(&tail);
     if(second && second->right)
         second->right = NULL;
     meta->last = second;
@@ -396,7 +396,7 @@ int removeListSorted(meta_t *meta, void *elem){
 
         previous->right = next;
         next->left = previous;
-        free_dyn(current);
+        free_dyn(&current);
 
         //decrement the amount of elements
         meta->nbelements--;
@@ -427,7 +427,7 @@ int freeDynList(meta_t* meta)
     {
         current = next;
         next = next->right;
-        free_dyn(current);
+        free_dyn(&current);
     }
 
     meta->structure = NULL;

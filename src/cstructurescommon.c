@@ -29,6 +29,8 @@ void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compar
     meta->doPError = printError;
 }
 
+void test(){}
+
 /********************************************************
  * @brief Allocate a structure element
  * 
@@ -75,11 +77,11 @@ dyndata_t* allocate_dyn(meta_t* meta, const void* elem)
  * @param elem  Element to free
  * @return      Success
 ********************************************************/
-int free_dyn(dyndata_t* elem)
+int free_dyn(dyndata_t** elem)
 {
-    free(elem->data);
-    free(elem);
-    elem = NULL;
+    free((*elem)->data);
+    free(*elem);
+    *elem = NULL;
 
     return 0;
 }

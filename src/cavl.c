@@ -288,7 +288,7 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key){
             }
 
             //free the memory of the child and update the elements counter
-            free_dyn(tmp);
+            free_dyn(&tmp);
             meta->nbelements--;
         }
         else{
