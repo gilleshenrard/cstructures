@@ -349,7 +349,8 @@ int insertListSorted(meta_t *meta, void* toAdd){
     }
 
     //chain new element
-    previous->right = newElement;
+    if(previous)
+        previous->right = newElement;
     newElement->right = current;
     if(!current)
         meta->last = newElement;

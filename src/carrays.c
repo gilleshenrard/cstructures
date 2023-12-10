@@ -159,12 +159,16 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
     //      with lower elements before, and higher ones after
     for(uint32_t j=low ; j<=high-1 ; j++){
         elem_j = get_arrayelem(meta, j);
-        if((*meta->doCompare)(elem_j, pivotElem) < 0){
-            i++;
-            elem_i = get_arrayelem(meta, i);
-            memcpy(tmp, elem_i, meta->elementsize);
-            memcpy(elem_i, elem_j, meta->elementsize);
-            memcpy(elem_j, tmp, meta->elementsize);
+        if(elem_j){
+            if((*meta->doCompare)(elem_j, pivotElem) < 0){
+                i++;
+                elem_i = get_arrayelem(meta, i);
+                if(elem_i){
+                    memcpy(tmp, elem_i, meta->elementsize);
+                    memcpy(elem_i, elem_j, meta->elementsize);
+                    memcpy(elem_j, tmp, meta->elementsize);
+                }
+            }
         }
     }
 
@@ -172,9 +176,11 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
     //      (uses elem_i and elem_j for the sake of not creating new pointers)
     elem_i = get_arrayelem(meta, i+1);
     elem_j = get_arrayelem(meta, high);
-    memcpy(tmp, elem_i, meta->elementsize);
-    memcpy(elem_i, elem_j, meta->elementsize);
-    memcpy(elem_j, tmp, meta->elementsize);
+    if(elem_i && elem_j){
+        memcpy(tmp, elem_i, meta->elementsize);
+        memcpy(elem_i, elem_j, meta->elementsize);
+        memcpy(elem_j, tmp, meta->elementsize);
+}
 
     free(tmp);
     return(i+1);
