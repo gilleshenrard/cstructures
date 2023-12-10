@@ -29,8 +29,6 @@ void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compar
     meta->doPError = printError;
 }
 
-void test(){}
-
 /********************************************************
  * @brief Allocate a structure element
  * 
