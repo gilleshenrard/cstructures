@@ -1,22 +1,31 @@
-/*
-** carrays.c
-** Library implementing the arrays
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 21/07/2022
-*/
-#include "carrays.h"
+/********************************************************
+ * @file carrays.c
+ * @brief Implements generic arrays
+ * @author Gilles Henrard
+ * @date 2023-12-10
+********************************************************/
 
+
+#include "carrays.h"
 #include <stdlib.h>
 #include <string.h>
 
-/************************************************************/
-/*  I : Metadata of the array                               */
-/*      index at which retrieve the element                 */
-/*  P : Returns the element located at i in the array       */
-/*  O : NULL if error                                       */
-/*      Address of the element otherwise                    */
-/************************************************************/
+//static functions
+static uint32_t quickSortPartitioning(meta_t*, uint32_t, uint32_t);
+
+
+/*********************************************************************************************/
+/*********************************************************************************************/
+
+
+/********************************************************
+ * @brief Get an element of the array
+ * 
+ * @param meta  Metadata used by the array
+ * @param i     Index of the element to get
+ * @return      Array element
+ * @retval NULL Element not found
+********************************************************/
 void* get_arrayelem(meta_t* meta, uint32_t i)
 {
     if(i >= meta->nbelements)
@@ -30,15 +39,15 @@ void* get_arrayelem(meta_t* meta, uint32_t i)
         return ((uint8_t*)meta->structure) + (meta->elementsize * i);
 }
 
-/************************************************************/
-/*  I : Metadata of the array                               */
-/*      index of the element to which assign a value        */
-/*      Value to assign                                     */
-/*  P : Set the value for the element located at the index  */
-/*          i in the array                                  */
-/*  O : -1 if error                                         */
-/*      0 otherwise                                         */
-/************************************************************/
+/********************************************************
+ * @brief Assign a value to an element of the array
+ * 
+ * @param meta  Metadata used by the array
+ * @param i     Index of the element
+ * @param elem  Element to assign
+ * @retval 0    OK
+ * @retval -1   Error
+********************************************************/
 int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
 {
     if(i >= meta->nbelements)
@@ -53,12 +62,12 @@ int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata of the array                               */
-/*  P : Free the memory occupied by the array               */
-/*  O : -1 if error                                         */
-/*      0 otherwise                                         */
-/************************************************************/
+/********************************************************
+ * @brief Free the memory occupied by the whole array
+ * 
+ * @param meta  Metadata used by the array
+ * @return 0
+********************************************************/
 int empty_array(meta_t* meta){
     //free the array itself
     free(meta->structure);
@@ -71,13 +80,14 @@ int empty_array(meta_t* meta){
     return 0;
 }
 
-/************************************************************/
-/*  I : Array of meta data necessary to the algorithm       */
-/*      Number of elements to sort at the end of the array  */
-/*  P : Sorts the provided array using the Bubble Sort algo */
-/*  O :  0 -> Sorted                                        */
-/*      -1 -> Error                                         */
-/************************************************************/
+/********************************************************
+ * @brief Sorts the array using the Bubble Sort algorithm
+ * 
+ * @param meta  Metadata used by the array
+ * @param nb    Number of elements to sort at the end of the array
+ * @retval 0    OK
+ * @retval -1   Error
+********************************************************/
 int bubbleSortArray(meta_t *meta, uint32_t nb){
     void *current=NULL, *next=NULL;
     void* tmp = NULL;
@@ -120,16 +130,15 @@ int bubbleSortArray(meta_t *meta, uint32_t nb){
     return 0;
 }
 
-/************************************************************/
-/*  I : Array of meta data necessary to the algorithm       */
-/*      Lowest element of the partition                     */
-/*      Highest element of the partition                    */
-/*  P : Sorts the partitions provided by the Quick Sort     */
-/*  O : New pivot                                           */
-/************************************************************/
-/*  WARNING : is solely to be used by the quick sort func.! */
-/************************************************************/
-uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high){
+/********************************************************
+ * @brief Sort the partitions provided by the Quick Sort algorithm
+ * 
+ * @param meta  Metadata used by the array
+ * @param low   Lowest element of the partition
+ * @param high  Highest element of the partition
+ * @return      New pivot
+********************************************************/
+static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high){
     void* pivotElem = NULL, *elem_i=NULL, *elem_j=NULL, *tmp = NULL;
     uint32_t i = 0;
 
@@ -173,16 +182,17 @@ uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high){
     return(i+1);
 }
 
-/************************************************************/
-/*  I : Array of meta data necessary to the algorithm       */
-/*      Lowest index in the array (most likely 0)           */
-/*      Highest index in the array (last element)           */
-/*  P : Sorts the provided array using the Quick Sort algo  */
-/*  O :  0 -> Sorted                                        */
-/*      -1 -> Error                                         */
-/************************************************************/
+/********************************************************
+ * @brief Sort the provided array using the Quick Sort algorithm
+ * 
+ * @param meta  Metadata used by the array
+ * @param low   Lowest index in the array (most likely 0)
+ * @param high  Highest index in the array (last element)
+ * @retval 0    OK
+ * @retval -1   Error
+********************************************************/
 int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
-    uint32_t pivot=0, diffLow = 0, diffHigh = 0;
+    uint32_t diffLow, diffHigh;
 
     //no meta data available
     if(!meta || !meta->doCompare)
@@ -198,6 +208,8 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
 
     //if current partition not yet entirely sorted
     if(diffLow > diffHigh){
+        uint32_t pivot;
+
         //place the pivot at its right place
         pivot = quickSortPartitioning(meta, low, high);
 
@@ -223,37 +235,38 @@ int quickSortArray(meta_t* meta, uint32_t low, uint32_t high){
     return 0;
 }
 
-/************************************************************/
-/*  I : Meta data necessary to the algorithm                */
-/*      Element to search                                   */
-/*      Scope of the search (first occurence or any occur.) */
-/*  P : Searches the key using the Binary search algorithm  */
-/*  O : -1  -> Not found                                    */
-/*     >= 0 -> Index of the occurence found in the array    */
-/************************************************************/
+/********************************************************
+ * @brief Search an element using the Binary Search algorithm
+ * 
+ * @param meta      Metadata used by the array
+ * @param toSearch  Element to search
+ * @param scope     Scope of the search (first occurence or any occurrence)
+ * @return          Index of the occurence found in the array
+ * @retval -1       Not found
+********************************************************/
 int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
-    int i=0, j=meta->nbelements-1, m=0, index=-1;
+    int i = 0, j = (meta->nbelements - 1), index = -1;
     void *current = NULL;
 
-    while(i<=j)
+    while(i <= j)
     {
-        m = (i+j)/2;
+        int m = (i + j) / 2;
         //position the cursor
         current = get_arrayelem(meta, m);
 
         if((*meta->doCompare)(current, toSearch) < 0)
-            i = m+1;
+            i = m + 1;
         else
         {
             if((*meta->doCompare)(current, toSearch) > 0)
-                j = m-1;
+                j = m - 1;
             else
             {
                 index = m;
                 if(scope == FIRST)
-                    j = m-1;
+                    j = m - 1;
                 else
-                    i = j+1;
+                    i = j + 1;
             }
         }
     }
@@ -261,14 +274,15 @@ int binarySearchArray(meta_t *meta, void* toSearch, e_search scope){
     return index;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Parameter for the action to perform                 */
-/*      Action to perform                                   */
-/*  P : Performs an action on every element of the array    */
-/*  O : 0 -> OK                                             */
-/*     -1 -> Error                                          */
-/************************************************************/
+/********************************************************
+ * @brief Perform an action on each element of the array
+ * 
+ * @param meta      Metadata used by the array
+ * @param parameter Parameter for the action to perform
+ * @param doAction  Action to perform
+ * @retval 0        OK
+ * @retval -1       Error
+********************************************************/
 int foreachArray(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     void* tmp = NULL;
 

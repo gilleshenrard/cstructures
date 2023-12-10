@@ -4,7 +4,10 @@
 #include <inttypes.h>
 
 //enum used in search algorithms
-typedef enum {FIRST, ANY} e_search;
+typedef enum {
+    FIRST,
+    ANY
+} e_search;
 
 //arrays manipulation
 void* get_arrayelem(meta_t* meta, uint32_t i);
@@ -13,7 +16,6 @@ int empty_array(meta_t* meta);
 
 //sorting algorithms
 int bubbleSortArray(meta_t*, uint32_t);
-uint32_t quickSortPartitioning(meta_t*, uint32_t, uint32_t);
 int quickSortArray(meta_t*, uint32_t, uint32_t);
 
 //search algorithms
