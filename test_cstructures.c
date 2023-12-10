@@ -66,8 +66,6 @@ int main(int argc, char *argv[])
 /************************************************************/
 int setup_data(dataset_t** data, uint32_t nb)
 {
-    uint32_t r = 0, r2 = 0;
-
     //allocate a space of nb times the size of dataset_t
     *data = calloc(nb, sizeof(dataset_t));
     if(!*data)
@@ -77,8 +75,8 @@ int setup_data(dataset_t** data, uint32_t nb)
     {
         //generate a radom number between 1 and nb (inclusive),
         //  and a second between 1 and 5
-        r = rand() % (2*nb) + 1;
-        r2 = rand() % 10 + 1;
+        uint32_t r = rand() % (2*nb) + 1;
+        uint32_t r2 = rand() % 10 + 1;
 
         //fill in information relative to the random number
         (*data)[i].id = r;
