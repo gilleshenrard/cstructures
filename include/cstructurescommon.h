@@ -12,26 +12,34 @@
 * if doPError is set as NULL, error printing will be ignored
 */
 
+/********************************************************
+ * @brief Forward-declaration of dyndata_t structures
+ * @note Mandatory to use a reference of a structure in itself
+********************************************************/
 typedef struct dyndata_t dyndata_t;
 
-//struct holding a container element
+/********************************************************
+ * @brief Structure defining a dynamic element used in all data structures
+********************************************************/
 struct dyndata_t
 {
-    void*       data;
-    int         height;
-    dyndata_t*  left;
-    dyndata_t*  right;
+    void*       data;   ///< Address of the memory used by the element
+    int         height; ///< Height of the element in the structure @note Used in AVL trees
+    dyndata_t*  left;   ///< Address of the element to the left of the current one
+    dyndata_t*  right;  ///< Address of the element to the right of the current one
 };
 
-//container metadata
+/********************************************************
+ * @brief Structure defining the metadata of a data structure
+********************************************************/
 typedef struct
 {
-    void*       structure;                      //pointer to the root of the whole structure
-    dyndata_t*  last;                           //highest element in the structure
-    uint32_t    nbelements;                     //number of elements in the structure
-    uint32_t    elementsize;                    //size of a core element (actual data without algorithmic overlay)
-    int         (*doCompare)(const void*, const void*);     //comparison method
-    void        (*doPError)(char* msg, ...);    //error printing method (can be ignored if set as NULL)
+    void*       structure;                              ///< address of the root of the structure
+    dyndata_t*  last;                                   ///< highest element in the structure
+    uint32_t    nbelements;                             ///< number of elements in the structure
+    uint32_t    elementsize;                            ///< size of a core element (actual data without algorithmic overlay)
+    int         (*doCompare)(const void*, const void*); ///< comparison method
+    void        (*doPError)(char* msg, ...);            ///< error printing method (can be ignored if set as NULL)
 } meta_t;
 
 //container elements manipulations

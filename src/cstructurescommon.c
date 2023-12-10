@@ -1,21 +1,26 @@
-/*
-** cstructurescommon.c
-** Library defining the key elements to handle the cstructures library
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 06/08/2022
-*/
+/********************************************************
+ * @file cstructurescommon.c
+ * @brief Implements the key elements to handle the cstructures library
+ * @author Gilles Henrard
+ * @date 2023-12-10
+********************************************************/
 #include "cstructurescommon.h"
 #include <stdlib.h>
 #include <string.h>
 
-/************************************************************/
-/*  I : Metadata of the element to allocate                 */
-/*      Size of an element in the structure                 */
-/*  P : Initialise the structure to 0 and set the received  */
-/*          fields                                          */
-/*  O : /                                                   */
-/************************************************************/
+
+/*********************************************************************************************/
+/*********************************************************************************************/
+
+
+/********************************************************
+ * @brief Initialise a structure
+ * 
+ * @param meta          Structure to initialise
+ * @param elementSize   Size of an element in the structure
+ * @param compare       Address of the function used to compare two elements
+ * @param printError    Address of the function used to print errors
+********************************************************/
 void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(char* msg, ...))
 {
     memset(meta, 0, sizeof(meta_t));
@@ -24,14 +29,14 @@ void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compar
     meta->doPError = printError;
 }
 
-/************************************************************/
-/*  I : Metadata of the element to allocate                 */
-/*      Actual data of the element to allocate              */
-/*  P : Allocates memory for a dynamic element and copy its */
-/*          value                                           */
-/*  O : Address of the element if OK                        */
-/*      NULL if error                                       */
-/************************************************************/
+/********************************************************
+ * @brief Allocate a structure element
+ * 
+ * @param meta  Metadata used by the current structure
+ * @param elem  Data to copy in the new element
+ * @return      Address of the new element
+ * @retval NULL Error
+********************************************************/
 dyndata_t* allocate_dyn(meta_t* meta, const void* elem)
 {
     dyndata_t* tmp=NULL;
@@ -64,11 +69,12 @@ dyndata_t* allocate_dyn(meta_t* meta, const void* elem)
     return tmp;
 }
 
-/************************************************************/
-/*  I : Element to deallocate                               */
-/*  P : Deallocates the memory for a dynamic element        */
-/*  O : /                                                   */
-/************************************************************/
+/********************************************************
+ * @brief Free the memory used by a dynamic element
+ * 
+ * @param elem  Element to free
+ * @return      Success
+********************************************************/
 int free_dyn(dyndata_t* elem)
 {
     free(elem->data);
@@ -78,11 +84,14 @@ int free_dyn(dyndata_t* elem)
     return 0;
 }
 
-/************************************************************/
-/*  I : Elements to swap                                    */
-/*  P : Swaps the pointers of the elements                  */
-/*  O : /                                                   */
-/************************************************************/
+/********************************************************
+ * @brief Swap two elements in a structure
+ * @note This is achieved by swapping their addresses
+ * 
+ * @param a First element to swap
+ * @param b Second element to swap
+ * @return  Success
+********************************************************/
 int swap_dyn(dyndata_t* a, dyndata_t* b)
 {
     dyndata_t *prev=a->left, *next=b->right;
@@ -100,12 +109,13 @@ int swap_dyn(dyndata_t* a, dyndata_t* b)
     return 0;
 }
 
-/************************************************************/
-/*  I : Element of which get the data                       */
-/*  P : Returns the data of the element                     */
-/*  O : NULL -> element not allocated                       */
-/*      Otherwise -> address of the data element            */
-/************************************************************/
+/********************************************************
+ * @brief Get the data encased in a dynamic element
+ * 
+ * @param cur   Element of which get the data
+ * @return      Address of the data in the element
+ * @retval NULL Element not allocated
+********************************************************/
 void* getdata(dyndata_t* cur)
 {
     if(cur)
@@ -114,12 +124,13 @@ void* getdata(dyndata_t* cur)
         return NULL;
 }
 
-/************************************************************/
-/*  I : Element of which get the next one in the structure  */
-/*  P : Returns the address of the next element             */
-/*  O : NULL -> no element to the right                     */
-/*      Otherwise -> address of the next element            */
-/************************************************************/
+/********************************************************
+ * @brief Get the element at the right of the current one
+ * 
+ * @param cur   Element of which get the right element
+ * @return      Element at the right
+ * @retval NULL Element not allocated
+********************************************************/
 dyndata_t* getright(dyndata_t* cur)
 {
     if(cur)
@@ -128,12 +139,13 @@ dyndata_t* getright(dyndata_t* cur)
         return NULL;
 }
 
-/************************************************************/
-/*  I : Element of which get the prev. one in the structure */
-/*  P : Returns the address of the previous element         */
-/*  O : NULL -> no element to the left                      */
-/*      Otherwise -> address of the previous element        */
-/************************************************************/
+/********************************************************
+ * @brief Get the element at the left of the current one
+ * 
+ * @param cur   Element of which get the left element
+ * @return      Element at the left
+ * @retval NULL Element not allocated
+********************************************************/
 dyndata_t* getleft(dyndata_t* cur)
 {
     if(cur)
@@ -142,12 +154,12 @@ dyndata_t* getleft(dyndata_t* cur)
         return NULL;
 }
 
-/************************************************************/
-/*  I : Data structure metadata                             */
-/*  P : Get the structure first element                     */
-/*  O : NULL -> no element                                  */
-/*      Otherwise -> address of the first element           */
-/************************************************************/
+/********************************************************
+ * @brief Get the root element of a data structure
+ * 
+ * @param meta  Metadata used by the structure
+ * @return      Root element
+********************************************************/
 dyndata_t* getFirst(const meta_t* meta){
     if(meta)
         return (dyndata_t*)meta->structure;
@@ -155,12 +167,12 @@ dyndata_t* getFirst(const meta_t* meta){
         return NULL;
 }
 
-/************************************************************/
-/*  I : Data structure metadata                             */
-/*  P : Get the structure last element                      */
-/*  O : NULL -> no element                                  */
-/*      Otherwise -> address of the last element            */
-/************************************************************/
+/********************************************************
+ * @brief Get the last element of a data structure
+ * 
+ * @param meta  Metadata used by the structure
+ * @return      Last element
+********************************************************/
 dyndata_t* getLast(const meta_t* meta){
     if(meta)
         return (dyndata_t*)meta->last;
