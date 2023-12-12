@@ -8,9 +8,6 @@
 #include "cavl.h"
 #include <string.h>
 
-//variables and consts used in AVL display
-#define LG_MAX 36
-
 static dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side);
 static int get_AVL_balance(dyndata_t* avl);
 static dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
@@ -102,6 +99,7 @@ dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
 /*  O : /                                                   */
 /************************************************************/
 void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(void*), int (*doPrint)(const char*, ...)){
+    static const uint8_t LG_MAX = 36U;
     char tmp[80]={0};
     int height = 0;
     int nbc_pad = 0;
