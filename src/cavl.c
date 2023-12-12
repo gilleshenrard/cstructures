@@ -8,6 +8,13 @@
 #include "cavl.h"
 #include <string.h>
 
+//variables and consts used in AVL display
+#define LG_MAX 36
+
+static dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side);
+static int get_AVL_balance(dyndata_t* avl);
+static dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
+
 int offset, offset_max;
 
 /************************************************************/
