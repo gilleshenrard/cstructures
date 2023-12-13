@@ -1,22 +1,26 @@
-/*
-** clists.c
-** Library implementing the bidirectional lists
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 21/07/2022
-*/
+/**
+ * @file clists.c
+ * @brief Implement bidirectional dynamic linked lists
+ * @author Gilles Henard
+ * @date 13/12/2023
+ */
 #include "clists.h"
 #include <stdlib.h>
 #include <string.h>
 
-/************************************************************/
-/*  I : Meta data necessary to the algorithm                */
-/*      Number of elements to sort at the end of the list   */
-/*  P : Sorts the provided linked list using                */
-/*          the Bubble Sort algorithm                       */
-/*  O :  0 -> Sorted                                        */
-/*      -1 -> Error                                         */
-/************************************************************/
+
+/*********************************************************************************************/
+/*********************************************************************************************/
+
+
+/**
+ * @brief Sort the provided linked list using the Bubble Sort algorithm
+ * 
+ * @param meta  Meta data necessary to the algorithm
+ * @param nb    Number of elements to sort at the end of the list
+ * @retval  0 Sorted
+ * @retval -1 Error
+ */
 int bubbleSortList(meta_t* meta, uint32_t nb){
     dyndata_t *current=NULL, *next=NULL, *right_ptr=NULL;
     int swapped = 0;
@@ -65,13 +69,14 @@ int bubbleSortList(meta_t* meta, uint32_t nb){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Index of the element to get                         */
-/*  P : Gets the nth element of a list                      */
-/*  O : Element if found                                    */
-/*      NULL otherwise                                      */
-/************************************************************/
+/**
+ * @brief Get the nth element of a list
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param i     Index of the element to get
+ * @return Element sought after
+ * @retval NULL Not found
+ */
 void* get_listelem(meta_t* meta, uint32_t i)
 {
     dyndata_t *tmp = meta->structure, *next = NULL;
@@ -105,12 +110,14 @@ void* get_listelem(meta_t* meta, uint32_t i)
     return tmp->data;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to search                                   */
-/*  P : Search an element in a non-sorted list              */
-/*  O : address of the element, NULL if not found           */
-/************************************************************/
+/**
+ * @brief Search an element in a non-sorted list
+ * 
+ * @param meta      Metadata necessary to the algorithm
+ * @param toSearch  Element to search
+ * @return Adress of the element
+ * @retval NULL Not found
+ */
 void* find_listelem(meta_t* meta, void* toSearch)
 {
     dyndata_t *current = (dyndata_t *)meta->structure;
@@ -121,12 +128,14 @@ void* find_listelem(meta_t* meta, void* toSearch)
     return current;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to search                                   */
-/*  P : Search an element in a sorted list                  */
-/*  O : address of the element, NULL if not found           */
-/************************************************************/
+/**
+ * @brief Search an element in a sorted list
+ * 
+ * @param meta      Metadata necessary to the algorithm
+ * @param toSearch  Element to search
+ * @return Address of the element
+ * @retval NULL Not found
+ */
 void* find_listelemSorted(meta_t* meta, void* toSearch)
 {
     dyndata_t *current = (dyndata_t *)meta->structure;
@@ -140,13 +149,14 @@ void* find_listelemSorted(meta_t* meta, void* toSearch)
         return NULL;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to append in the list                       */
-/*  P : Inserts an element at the top of a linked list      */
-/*  O : 0 -> Element added                                  */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Insert an element at the top of a linked list
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param toAdd Element to append in the list
+ * @retval  0 Added
+ * @retval -1 Error
+ */
 int insertListTop(meta_t* meta, void *toAdd){
     dyndata_t *newElement = NULL, *tmp=NULL;
 
@@ -193,13 +203,14 @@ int insertListTop(meta_t* meta, void *toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to append in the list                       */
-/*  P : Inserts an element at the bottom of a linked list   */
-/*  O : 0 -> Element added                                  */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Insert an element at the bottom of a linked list
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param toAdd Element to append in the list
+ * @retval  0 Added
+ * @retval -1 Error
+ */
 int insertListBottom(meta_t* meta, void *toAdd){
     dyndata_t *newElement = NULL;
 
@@ -243,12 +254,13 @@ int insertListBottom(meta_t* meta, void *toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*  P : Removes the first element of the list               */
-/*  O : 0 -> Element popped                                 */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Remove the first element of the list
+ * 
+ * @param meta Metadata necessary to the algorithm
+ * @retval  0 Popped
+ * @retval -1 Error
+ */
 int popListTop(meta_t* meta){
     dyndata_t *head = NULL, *second=NULL;
 
@@ -279,12 +291,13 @@ int popListTop(meta_t* meta){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*  P : Removes the last element of the list                */
-/*  O : 0 -> Element popped                                 */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Remove the last element of the list
+ * 
+ * @param meta Metadata necessary to the algorithm
+ * @retval  0 Popped
+ * @retval -1 Error
+ */
 int popListBottom(meta_t* meta){
     dyndata_t *tail = NULL, *second=NULL;
 
@@ -315,14 +328,14 @@ int popListBottom(meta_t* meta){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to insert in the list                       */
-/*  P : Inserts an element at the right place in a sorted   */
-/*          linked list                                     */
-/*  O : 0 -> Element added                                  */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Insert an element at the right place in a sorted linked list
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param toAdd Element to insert in the list
+ * @return Element added
+ * @retval NULL Error 
+ */
 int insertListSorted(meta_t *meta, void* toAdd){
     dyndata_t *newElement = NULL, *previous=NULL, *current=meta->structure;
 
@@ -361,13 +374,14 @@ int insertListSorted(meta_t *meta, void* toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to remove from the list                     */
-/*  P : Remove an element from a sorted linked list         */
-/*  O : 0 -> Element removed                                */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Remove an element from a sorted linked list
+ * 
+ * @param meta Metadata necessary to the algorithm
+ * @param elem Element to remove from the list
+ * @retval  0 Item removed
+ * @retval -1 Error
+ */
 int removeListSorted(meta_t *meta, void *elem){
     dyndata_t *previous = NULL, *current = NULL, *next = NULL;
 
@@ -408,13 +422,13 @@ int removeListSorted(meta_t *meta, void *elem){
     return 0;
 }
 
-/************************************************************/
-/*  I : Dynamic list to free                                */
-/*      nullable variable (necessary for compatibility)     */
-/*  P : Frees the memory of a list and its data             */
-/*  O :  0 if OK                                            */
-/*      -1 if error                                         */
-/************************************************************/
+/**
+ * @brief Free the memory of a list and its data
+ * 
+ * @param meta Metadata necessary to the algorithm
+ * @retval  0 OK
+ * @retval -1 Error
+ */
 int freeDynList(meta_t* meta)
 {
     dyndata_t *next = NULL, *current=NULL;
@@ -437,14 +451,15 @@ int freeDynList(meta_t* meta)
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Parameter for the action to perform                 */
-/*      Action to perform                                   */
-/*  P : Performs an action on every element of the list     */
-/*  O : 0 -> OK                                             */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Perform an action on every element of the list
+ * 
+ * @param meta      Metadata necessary to the algorithm
+ * @param parameter Parameter for the action to perform
+ * @param doAction  Action to perform
+ * @retval  0 OK
+ * @retval -1 Error
+ */
 int foreachList(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     dyndata_t *next = NULL, *current=NULL;
 
