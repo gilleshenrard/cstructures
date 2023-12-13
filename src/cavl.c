@@ -1,24 +1,31 @@
-/*
-** cavl.c
-** Library implementing the AVL trees
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 21/07/2022
-*/
+/**
+ * @file cavl.c
+ * @brief Implement the AVL trees data structure
+ * @author Gilles Henrard
+ * @date 13/12/2023
+ */
 #include "cavl.h"
 #include <string.h>
 
+//AVL internal functions
 static dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side);
 static int get_AVL_balance(dyndata_t* avl);
 static dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to insert in the AVL                        */
-/*  P : Inserts an element in an AVL                        */
-/*  O : AVL root if ok                                      */
-/*      NULL otherwise                                      */
-/************************************************************/
+
+/*********************************************************************************************/
+/*********************************************************************************************/
+
+
+/**
+ * @brief Insert an element in an AVL
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param avl   AVL tree to which add the element
+ * @param toAdd Element to insert in the AVL
+ * @return Root of the AVL
+ * @retval NULL Failure
+ */
 dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
     int height_left=0, height_right=0, balance=0;
 
@@ -92,16 +99,15 @@ dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
     return avl;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to browse/display                           */
-/*      Character designed to be displayed to indicate      */
-/*          node direction compared to its root             */
-/*      Method to get the string ID of the node             */
-/*      Method to print a whole line                        */
-/*  P : Displays an AVL as a tree                           */
-/*  O : /                                                   */
-/************************************************************/
+/**
+ * @brief Displays an AVL as a tree
+ * 
+ * @param meta      Metadata necessary to the algorithm
+ * @param avl       Element to browse/display
+ * @param dir       Character designed to be displayed to indicate node direction compared to its root
+ * @param toString  Method to get the string ID of the node
+ * @param doPrint   Method to print a whole line
+ */
 void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(void*), int (*doPrint)(const char*, ...)){
     static const uint8_t LG_MAX = 36U;
     static int offset = 0;
@@ -130,12 +136,13 @@ void display_AVL_tree(meta_t* meta, dyndata_t* avl, char dir, char* (*toString)(
     offset--;
 }
 
-/************************************************************/
-/*  I : AVL tree to rotate                                  */
-/*      Side of the rotation (LEFT or RIGHT)                */
-/*  P : Rotates an AVL to the side required                 */
-/*  O : Rotated AVL                                         */
-/************************************************************/
+/**
+ * @brief Rotate an AVL to the side required
+ * 
+ * @param avl   AVL tree to rotate
+ * @param side  Side of the rotation (LEFT or RIGHT)
+ * @return      Rotated AVL
+ */
 dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side){
     dyndata_t *newTree=NULL, *child=NULL;
     int height_l=0, height_r=0;
@@ -174,11 +181,12 @@ dyndata_t* rotate_AVL(dyndata_t* avl, e_rotation side){
     return newTree;
 }
 
-/************************************************************/
-/*  I : AVL tree of which to compute the balance            */
-/*  P : Computes and returns the balance of an AVL          */
-/*  O : Balance                                             */
-/************************************************************/
+/**
+ * @brief Compute and return the balance of an AVL
+ * 
+ * @param avl   AVL tree of which to compute the balance
+ * @return      Balance
+ */
 int get_AVL_balance(dyndata_t* avl){
     int height_left=0, height_right=0;
 
@@ -191,15 +199,16 @@ int get_AVL_balance(dyndata_t* avl){
     return height_left - height_right;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Root of the AVL to which perform the action         */
-/*      Parameter for the action to perform                 */
-/*      Action to perform                                   */
-/*  P : Performs an action on every element of the AVL      */
-/*  O : 0 -> OK                                             */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Perform an action on every element of the AVL
+ * 
+ * @param meta      Metadata necessary to the algorithm
+ * @param avl       Root of the AVL to which perform the action
+ * @param parameter Parameter for the action to perform
+ * @param doAction  Action to perform
+ * @retval  0 OK
+ * @retval -1 Error
+ */
 int foreachAVL(meta_t* meta, dyndata_t* avl, void* parameter, int (*doAction)(void*, void*)){
     int ret = 0;
 
@@ -223,14 +232,15 @@ int foreachAVL(meta_t* meta, dyndata_t* avl, void* parameter, int (*doAction)(vo
     return ret;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      AVL in which search for the key                     */
-/*      Key to search in the AVL                            */
-/*  P : Recursively search for a key in the AVL             */
-/*  O : Leaf if found                                       */
-/*      NULL otherwise                                      */
-/************************************************************/
+/**
+ * @brief Recursively search for a key in the AVL
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param avl   AVL in which search for the key
+ * @param key   Key to search in the AVL
+ * @return Node found
+ * @retval NULL Key not found
+ */
 void* search_AVL(meta_t* meta, dyndata_t* avl, void* key){
     dyndata_t *child = NULL;
 
@@ -248,14 +258,15 @@ void* search_AVL(meta_t* meta, dyndata_t* avl, void* key){
     return search_AVL(meta, child, key);
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Root of the AVL from which remove an elemnt         */
-/*      Key to remove from the AVL                          */
-/*  P : Removes an element from the AVL provided            */
-/*  O : Leaf if found                                       */
-/*      NULL otherwise                                      */
-/************************************************************/
+/**
+ * @brief Remove an element from the AVL provided
+ * 
+ * @param meta  Metadata necessary to the algorithm
+ * @param root  Root of the AVL from which remove an elemnt
+ * @param key   Key to remove from the AVL
+ * @return Node found
+ * @retval NULL Key not found
+ */
 dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key){
     int height_right=0, height_left=0, balance=0;
     dyndata_t *tmp=NULL, *databuf=NULL;
@@ -350,12 +361,13 @@ dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key){
     return root;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*  P : Removes the root from the AVL provided              */
-/*  O :  0 if OK                                            */
-/*      -1 otherwise                                        */
-/************************************************************/
+/**
+ * @brief Remove the root from the AVL provided
+ * 
+ * @param meta Metadata necessary to the algorithm
+ * @retval  0 OK
+ * @retval -1 Error
+ */
 int delete_AVL_root(meta_t* meta){
     dyndata_t* tmp = meta->structure;
 
@@ -365,12 +377,13 @@ int delete_AVL_root(meta_t* meta){
     return 0;
 }
 
-/************************************************************/
-/*  I : AVL for which find the smallest value               */
-/*  P : Finds the subtree with the smallest value           */
-/*          (most to the left)                              */
-/*  O : Most left node in the subtree                       */
-/************************************************************/
+/**
+ * @brief Find the subtree with the smallest value
+ * @note This is the node most to the left
+ * 
+ * @param avl AVL for which find the smallest value
+ * @return Most left node in the subtree
+ */
 dyndata_t* min_AVL_value(dyndata_t* avl){
     dyndata_t* current = avl;
 
