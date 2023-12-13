@@ -22,6 +22,9 @@ static dyndata_t* delete_AVL(meta_t* meta, dyndata_t* root, void* key);
 dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
     int height_left=0, height_right=0, balance=0;
 
+    if(!meta)
+        return NULL;
+
     //if tree is empty
     if(!avl){
         if(!meta->structure)
@@ -29,6 +32,9 @@ dyndata_t* insertAVL(meta_t* meta, dyndata_t* avl, void* toAdd){
 
         //memory allocation for the new element
         avl = allocate_dyn(meta, toAdd);
+        if(!avl)
+            return NULL;
+
         meta->nbelements++;
         return avl;
     }
