@@ -1,20 +1,20 @@
-/*
-** cqueues.c
-** Library implementing the queues (priority and non-priority)
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 04/08/2022
-*/
+/**
+ * @file cqueues.c
+ * @brief Implement dynamic queues with priority mechanisms
+ * @author Gilles Henrard
+ * @date 18/12/2023
+ */
 #include "cqueues.h"
 #include <stdlib.h>
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to add in the queue                         */
-/*  P : Push a new element at the back of the queue         */
-/*  O : 0 -> Element pushed                                 */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Push a new element at the back of the queue
+ * 
+ * @param meta  Metadata used by the queue
+ * @param toAdd Element to push in the queue
+ * @retval  0 Element pushed
+ * @retval -1 Error
+ */
 int pushQueue(meta_t *meta,  const void *toAdd){
     dyndata_t *newElement = NULL;
 
@@ -59,13 +59,14 @@ int pushQueue(meta_t *meta,  const void *toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to add in the queue                         */
-/*  P : Push a new element at the back of the prior. queue  */
-/*  O : 0 -> Element pushed                                 */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Push a new element at the back of the priority queue
+ * 
+ * @param meta  Metadata used by the queue
+ * @param toAdd Element to push in the queue
+ * @retval  0 Element pushed
+ * @retval -1 Error
+ */
 int pushPriorityQueue(meta_t *meta,  const void *toAdd){
     dyndata_t *newElement = NULL, *tmp = NULL, *tmp2=NULL;
 
@@ -131,12 +132,13 @@ int pushPriorityQueue(meta_t *meta,  const void *toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*  P : Pop the first element from the queue                */
-/*  O : Head of the queue                                   */
-/*      NULL if error or queue empty                        */
-/************************************************************/
+/**
+ * @brief Pop the first element from the queue
+ * 
+ * @param meta Metadata used by the queue
+ * @return Head of the queue
+ * @retval NULL Error or queue empty
+ */
 void* popQueue(meta_t* meta){
     dyndata_t *tmp = NULL;
 
@@ -164,14 +166,15 @@ void* popQueue(meta_t* meta){
     return tmp;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Parameter for the action to perform                 */
-/*      Action to perform                                   */
-/*  P : Performs an action on every element of the queue    */
-/*  O : 0 -> OK                                             */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Perform an action on every element of the queue
+ * 
+ * @param meta      Metadata used by the queue
+ * @param parameter Parameter used by the action to perform
+ * @param doAction  Action to perform
+ * @retval  0 Action performed
+ * @retval -1 Error
+ */
 int foreachQueue(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     dyndata_t *next = NULL, *current=NULL;
 
