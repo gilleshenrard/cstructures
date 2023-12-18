@@ -1,20 +1,20 @@
-/*
-** cstacks.c
-** Library implementing the stacks
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 04/08/2022
-*/
+/**
+ * @file cstacks.c
+ * @brief Implement bidirectional dynamic stacks
+ * @author Gilles Henrard
+ * @date 18/12/2023
+ */
 #include "cstacks.h"
 #include <stdlib.h>
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Element to add in the queue                         */
-/*  P : Push a new element at the head of the stack         */
-/*  O : 0 -> Element pushed                                 */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Push a new element at the head of the stack
+ * 
+ * @param meta  Metadata used by the stack
+ * @param toAdd Element to add in the stack
+ * @retval  0 Element added
+ * @retval -1 Error
+ */
 int pushStack(meta_t *meta,  const void *toAdd){
     dyndata_t *newElement = NULL;
 
@@ -59,12 +59,13 @@ int pushStack(meta_t *meta,  const void *toAdd){
     return 0;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*  P : Pop the first element from the stack                */
-/*  O : Head of the stack                                   */
-/*      NULL if error or queue empty                        */
-/************************************************************/
+/**
+ * @brief Pop the head from the stack
+ * 
+ * @param meta Metadata used by the stack
+ * @return Head of the stack
+ * @retval NULL Error or queue empty
+ */
 void* popStack(meta_t* meta){
     dyndata_t *tmp = NULL;
 
@@ -92,14 +93,15 @@ void* popStack(meta_t* meta){
     return tmp;
 }
 
-/************************************************************/
-/*  I : Metadata necessary to the algorithm                 */
-/*      Parameter for the action to perform                 */
-/*      Action to perform                                   */
-/*  P : Performs an action on every element of the stack    */
-/*  O : 0 -> OK                                             */
-/*     -1 -> Error                                          */
-/************************************************************/
+/**
+ * @brief Perform an action on every element of the stack
+ * 
+ * @param meta      Metadata used by the stack
+ * @param parameter Parameter used by the action to perform
+ * @param doAction  Action to perform
+ * @retval  0 Element added
+ * @retval -1 Error
+ */
 int foreachStack(meta_t* meta, void* parameter, int (*doAction)(void*, void*)){
     dyndata_t *next = NULL, *current=NULL;
 
