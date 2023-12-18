@@ -12,7 +12,7 @@
 #endif
 int Print_dataset(void* elem, void* nullable)
 {
-    dataset_t* A=(dataset_t*)elem;
+    const dataset_t* A=(dataset_t*)elem;
 
     printf("%2d,%32s%4.8f\n", A->id, A->type, A->price);
     return 0;
@@ -45,7 +45,7 @@ char* toString_dataset(void* elem)
 /****************************************************************************************/
 int compare_dataset(const void* a, const void* b)
 {
-    dataset_t* A=(dataset_t*)a, *B=(dataset_t*)b;
+    const dataset_t* A=(dataset_t*)a, *B=(dataset_t*)b;
 
     if(A->id > B->id)
         return 1;
@@ -65,7 +65,7 @@ int compare_dataset(const void* a, const void* b)
 /****************************************************************************************/
 int compare_dataset_int(const void* a, const void* b)
 {
-    dataset_t* A = (dataset_t*)a;
+    const dataset_t* A = (dataset_t*)a;
     int* B = (int*)b;
 
     if(A->id > *B)
