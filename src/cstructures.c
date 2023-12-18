@@ -1,27 +1,22 @@
-/*
-** cstructures.c
-** Library regrouping algorithmic-based functions
-** Structures available :
-**   - Bidirectional lists
-**   - Arrays
-**   - AVL trees
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 21/07/2022
-*/
+/**
+ * @file cstructures.c
+ * @brief Implement a structure-wise algorithms library
+ * @author Gilles Henrard
+ * @date 18/12/2023
+ */
 #include "cstructures.h"
 #include <stdlib.h>
 #include <string.h>
 
-/************************************************************/
-/*  I : List to copy                                        */
-/*      Array to create (MUST BE EMPTY)                     */
-/*      Action to perform on the list members (free or not) */
-/*  P : Allocates memory for the array and copies the list  */
-/*          into it                                         */
-/*  O :  0 -> Array created                                 */
-/*      -1 -> Error                                         */
-/************************************************************/
+/**
+ * @brief Allocates memory an array and copies a list into it
+ * 
+ * @param dList     List to copy
+ * @param dArray    Array to create @warning MUST BE EMPTY
+ * @param action    Action to perform on the list members @note free or not
+ * @retval  0 Array created
+ * @retval -1 Error
+ */
 int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action){
     void *tmp_array = NULL;
     dyndata_t* tmp_list = NULL;
@@ -74,15 +69,15 @@ int listToArray(meta_t* dList, meta_t* dArray, e_listtoarray action){
     return 0;
 }
 
-/************************************************************/
-/*  I : Array to copy                                       */
-/*      List to create                                      */
-/*      Action to perform on the list members (free or not) */
-/*  P : Allocates memory for the list and copies the array  */
-/*          into it                                         */
-/*  O :  0 -> List created                                  */
-/*      -1 -> Error                                         */
-/************************************************************/
+/**
+ * @brief Allocates memory for a list and copies an array into it
+ * 
+ * @param dArray    Array to copy
+ * @param dList     List to create
+ * @param action    Action to perform on the list members @note free or not
+ * @retval  0 List created
+ * @retval -1 Error
+ */
 int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action){
     //copy elements one by one in the list
     for(uint32_t i=0 ; i<dArray->nbelements ; i++)
@@ -104,15 +99,15 @@ int arrayToList(meta_t* dArray, meta_t* dList, e_listtoarray action){
     return 0;
 }
 
-/************************************************************/
-/*  I : Array to copy                                       */
-/*      AVL to create                                       */
-/*      Action to perform on the list members (free or not) */
-/*  P : Allocates memory for the AVL and copies the array   */
-/*          into it                                         */
-/*  O :  0 -> AVL created                                   */
-/*      -1 -> Error                                         */
-/************************************************************/
+/**
+ * @brief Allocates memory for the AVL and copies the array into it
+ * 
+ * @param dArray    Array to copy
+ * @param dAVL      AVL to create
+ * @param action    Action to perform on the list members @note free or not
+ * @retval  0 AVL created
+ * @retval -1 Error
+ */
 int arrayToAVL(meta_t* dArray, meta_t* dAVL, e_listtoarray action){
     dyndata_t* tmp_array = dArray->structure;
 
