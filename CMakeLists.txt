@@ -11,7 +11,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -pedantic -pedantic-er
 add_executable(${PROJECT_NAME} ${PROJECT_NAME}.c)
 add_subdirectory(src)
 target_include_directories(${PROJECT_NAME} PUBLIC
-                          "${PROJECT_BINARY_DIR}"
                           "${PROJECT_SOURCE_DIR}/include"
                           "${PROJECT_SOURCE_DIR}/include/screen"
                           "${PROJECT_SOURCE_DIR}/include/test"
