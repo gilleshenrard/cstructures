@@ -13,9 +13,14 @@ add_subdirectory(src)
 target_include_directories(${PROJECT_NAME} PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           "${PROJECT_SOURCE_DIR}/include"
+                          "${PROJECT_SOURCE_DIR}/include/screen"
+                          "${PROJECT_SOURCE_DIR}/include/test"
                           )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC cstructures)
+target_link_libraries(${PROJECT_NAME}
+                        PUBLIC cstructures
+                        PUBLIC screen
+                        PUBLIC datasetTest)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
