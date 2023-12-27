@@ -60,6 +60,9 @@ bin
 *.depend
 *.layout
 
+# code::blocks files
+.vscode/
+
 #CMake files
 build/
 
