@@ -30,7 +30,7 @@
  * @param compare       Address of the function used to compare two elements
  * @param printError    Address of the function used to print errors
 */
-void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(char* msg, ...))
+void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(const char* msg, ...))
 {
     memset(meta, 0, sizeof(meta_t));
     meta->elementsize = elementSize;

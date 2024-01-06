@@ -29,11 +29,11 @@ typedef struct
     uint32_t    nbelements;                             ///< number of elements in the structure
     uint32_t    elementsize;                            ///< size of a core element (actual data without algorithmic overlay)
     int         (*doCompare)(const void*, const void*); ///< comparison method
-    void        (*doPError)(char* msg, ...);            ///< error printing method (can be ignored if set as NULL)
+    void        (*doPError)(const char* msg, ...);      ///< error printing method (can be ignored if set as NULL)
 } meta_t;
 
 //container elements manipulations
-void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(char* msg, ...));
+void initialise_structure(meta_t* meta, const uint32_t elementSize, int (*compare)(const void*, const void*), void (*printError)(const char* msg, ...));
 dyndata_t* allocate_dyn(meta_t* meta, const void* elem);
 int free_dyn(dyndata_t** elem);
 int swap_dyn(dyndata_t* a, dyndata_t* b);

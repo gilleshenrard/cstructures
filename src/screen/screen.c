@@ -1,12 +1,11 @@
-/*
-** screen.c
-** Library providing an error printing function
-** ---------------------------------------------------
-** Made by Gilles Henrard
-** Last modified : 06/08/2022
-*/
+/**
+ * @file screen.c
+ * @brief Implements screen-specific manipulations
+ * @author Gilles Henrard
+ * @date 06/01/2024
+ */
 #include "screen.h"
-#include<stdio.h>
+#include <stdio.h>
 #include <stdarg.h>
 
 #define RESET   0
@@ -22,18 +21,18 @@
 
 #define SZLINE  128
 
-/************************************************************/
-/*  I : Error message to print                              */
-/*      Parameters to add in the message                    */
-/*  P : Print an error message                              */
-/*  O : /                                                   */
-/************************************************************/
-void printError(char* format, ...){
+/**
+ * @brief Print an error message in bold red on screen
+ * 
+ * @param format Format to apply to the message
+ * @param ... Additional parameters used by the print function
+ */
+void printError(const char* format, ...){
     char final_msg[SZLINE] = {0};
     va_list arg;
 
     va_start(arg, format);
-        vsprintf(final_msg, format, arg);
-        fprintf(stderr, "\033[%d;%dm%s\033[0m\n", BOLD, RED, final_msg);
+        vsprintf_s(final_msg, SZLINE, format, arg);
+        fprintf_s(stderr, "\033[%d;%dm%s\033[0m\n", BOLD, RED, final_msg);
     va_end(arg);
 }
