@@ -1,12 +1,20 @@
+/**
+ * @file dataset_test.c
+ * @author Gilles Henrard
+ * @brief Dummy structure used to test out the algorithms
+ * @date 06/01/2024
+ */
 #include "dataset_test.h"
 #include <string.h>
 #include <stdio.h>
 
-/****************************************************************************************/
-/*  I : dataset record to print                                                         */
-/*  P : Prints an dataset record                                                        */
-/*  O : /                                                                               */
-/****************************************************************************************/
+/**
+ * @brief Prints a dataset record on screen
+ * 
+ * @param elem      Element to print
+ * @param nullable  Unused parameter
+ * @retval 0        Success
+ */
 int Print_dataset(void* elem, void* nullable)
 {
     const dataset_t* A=(dataset_t*)elem;
@@ -16,12 +24,13 @@ int Print_dataset(void* elem, void* nullable)
     return 0;
 }
 
-/************************************************************/
-/*  I : record to summarise as a string                     */
-/*      /                                                   */
-/*  P : returns a string representing the dataset           */
-/*  O : /                                                   */
-/************************************************************/
+/**
+ * @brief Returns a string representing the dataset
+ * @note This just returns the type field value of the record
+ * 
+ * @param elem      Record to print
+ * @return char*    Record type
+ */
 char* toString_dataset(void* elem)
 {
     const dataset_t* A = (dataset_t*)elem;
@@ -29,18 +38,15 @@ char* toString_dataset(void* elem)
     return (char*)A->type;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////// DYNAMIC ALLOCATION METHODS /////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/****************************************************************************************/
-/*  I : first dataset to compare                                                        */
-/*      second dataset to compare                                                       */
-/*  P : Compares two datasets by their ID and name                                      */
-/*  O :  1 if A > B                                                                     */
-/*       0 if A = B                                                                     */
-/*      -1 if A < B                                                                     */
-/****************************************************************************************/
+/**
+ * @brief Compares two datasets by their ID and name
+ * 
+ * @param a First dataset to compare
+ * @param b Second dataset to compare
+ * @retval  1 A > B
+ * @retval  0 A = B
+ * @retval -1 A < B
+ */
 int compare_dataset(const void* a, const void* b)
 {
     const dataset_t* A=(dataset_t*)a, *B=(dataset_t*)b;
@@ -53,14 +59,15 @@ int compare_dataset(const void* a, const void* b)
         return strcmp(A->type, B->type);
 }
 
-/****************************************************************************************/
-/*  I : first dataset to compare                                                        */
-/*      second dataset to compare                                                       */
-/*  P : Compares two datasets by their ID                                               */
-/*  O :  1 if A > B                                                                     */
-/*       0 if A = B                                                                     */
-/*      -1 if A < B                                                                     */
-/****************************************************************************************/
+/**
+ * @brief Compares two datasets by their ID
+ * 
+ * @param a First dataset to compare
+ * @param b Second dataset to compare
+ * @retval  1 A > B
+ * @retval  0 A = B
+ * @retval -1 A < B
+ */
 int compare_dataset_int(const void* a, const void* b)
 {
     const dataset_t* A = (dataset_t*)a;
