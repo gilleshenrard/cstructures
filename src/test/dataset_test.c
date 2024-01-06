@@ -24,9 +24,9 @@ int Print_dataset(void* elem, void* nullable)
 /************************************************************/
 char* toString_dataset(void* elem)
 {
-    dataset_t* A = (dataset_t*)elem;
+    const dataset_t* A = (dataset_t*)elem;
 
-    return A->type;
+    return (char*)A->type;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
