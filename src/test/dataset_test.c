@@ -7,12 +7,10 @@
 /*  P : Prints an dataset record                                                        */
 /*  O : /                                                                               */
 /****************************************************************************************/
-#ifdef __GNUC__
-# pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 int Print_dataset(void* elem, void* nullable)
 {
     const dataset_t* A=(dataset_t*)elem;
+    (void)nullable;
 
     printf("%2d,%32s%4.8f\n", A->id, A->type, A->price);
     return 0;
