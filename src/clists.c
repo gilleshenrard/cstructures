@@ -2,7 +2,7 @@
  * @file clists.c
  * @brief Implement bidirectional dynamic linked lists
  * @author Gilles Henard
- * @date 13/12/2023
+ * @date 07/01/2024
  */
 #include "clists.h"
 #include <stdlib.h>
