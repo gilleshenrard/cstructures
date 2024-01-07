@@ -39,7 +39,7 @@ int bubbleSortList(meta_t* meta, uint32_t nbToSort){
         current = meta->structure;
         next = current->right;
 
-        while(next != sentryRight){
+        while(next && (next != sentryRight)){
             //if current element higher
             if((*meta->doCompare)(current->data, next->data) > 0)
             {
@@ -133,17 +133,20 @@ void* find_listelem(meta_t* meta, void* toSearch)
  * 
  * @param meta      Metadata necessary to the algorithm
  * @param toSearch  Element to search
- * @return Address of the element
- * @retval NULL Not found
+ * @return          Address of the element
+ * @retval NULL     Not found
  */
 void* find_listelemSorted(meta_t* meta, void* toSearch)
 {
+    if(!meta || !meta->structure)
+        return NULL;
+
     dyndata_t *current = (dyndata_t *)meta->structure;
 
-    while(current && (*meta->doCompare)(current->data, toSearch) < 0)
+    while((*meta->doCompare)(current->data, toSearch) < 0)
         current = current->right;
 
-    if(!(*meta->doCompare)(current->data, toSearch))
+    if(current->data && ((*meta->doCompare)(current->data, toSearch) == 0))
         return current;
     else
         return NULL;
