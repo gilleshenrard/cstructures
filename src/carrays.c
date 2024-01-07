@@ -2,7 +2,7 @@
  * @file carrays.c
  * @brief Implements generic arrays
  * @author Gilles Henrard
- * @date 2023-12-10
+ * @date 07/01/2024
 **/
 #include "carrays.h"
 #include <stdlib.h>
@@ -56,7 +56,7 @@ int set_arrayelem(meta_t* meta, uint32_t i, void* elem)
         return -1;
     }
 
-    memcpy(((uint8_t*)meta->structure) + (meta->elementsize * i), elem, meta->elementsize);
+    memcpy_s(((uint8_t*)meta->structure) + (meta->elementsize * i), meta->elementsize, elem, meta->elementsize);
     return 0;
 }
 
@@ -117,9 +117,9 @@ int bubbleSortArray(meta_t *meta, uint32_t nb){
             if((*meta->doCompare)(current, next) > 0)
             {
                 //swap the elements
-                memcpy(tmp, current, meta->elementsize);
-                memcpy(current, next, meta->elementsize);
-                memcpy(next, tmp, meta->elementsize);
+                memcpy_s(tmp, meta->elementsize, current, meta->elementsize);
+                memcpy_s(current, meta->elementsize, next, meta->elementsize);
+                memcpy_s(next, meta->elementsize, tmp, meta->elementsize);
             }
         }
     }
@@ -164,9 +164,9 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
                 i++;
                 elem_i = get_arrayelem(meta, i);
                 if(elem_i){
-                    memcpy(tmp, elem_i, meta->elementsize);
-                    memcpy(elem_i, elem_j, meta->elementsize);
-                    memcpy(elem_j, tmp, meta->elementsize);
+                    memcpy_s(tmp, meta->elementsize, elem_i, meta->elementsize);
+                    memcpy_s(elem_i, meta->elementsize, elem_j, meta->elementsize);
+                    memcpy_s(elem_j, meta->elementsize, tmp, meta->elementsize);
                 }
             }
         }
@@ -177,9 +177,9 @@ static uint32_t quickSortPartitioning(meta_t* meta, uint32_t low, uint32_t high)
     elem_i = get_arrayelem(meta, i+1);
     elem_j = get_arrayelem(meta, high);
     if(elem_i && elem_j){
-        memcpy(tmp, elem_i, meta->elementsize);
-        memcpy(elem_i, elem_j, meta->elementsize);
-        memcpy(elem_j, tmp, meta->elementsize);
+        memcpy_s(tmp, meta->elementsize, elem_i, meta->elementsize);
+        memcpy_s(elem_i, meta->elementsize, elem_j, meta->elementsize);
+        memcpy_s(elem_j, meta->elementsize, tmp, meta->elementsize);
 }
 
     free(tmp);
