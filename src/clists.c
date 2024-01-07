@@ -14,17 +14,17 @@
 
 
 /**
- * @brief Sort the provided linked list using the Bubble Sort algorithm
+ * @brief Sort the provided linked list (from smallest to biggest) using the Bubble Sort algorithm
  * 
- * @param meta  Meta data necessary to the algorithm
- * @param nb    Number of elements to sort at the end of the list
- * @retval  0 Sorted
- * @retval -1 Error
+ * @param meta      Meta data necessary to the algorithm
+ * @param nbToSort  Number of biggest elements to sort at the end of the list
+ * @retval  0       Sorted
+ * @retval -1       Error
  */
-int bubbleSortList(meta_t* meta, uint32_t nb){
-    dyndata_t *current=NULL, *next=NULL, *right_ptr=NULL;
+int bubbleSortList(meta_t* meta, uint32_t nbToSort){
+    dyndata_t *current=NULL, *next=NULL, *sentryRight = NULL;
     int swapped = 0;
-    uint32_t count = 0;
+    uint32_t remainingToSort = nbToSort;
 
     //no meta data available
     if(!meta || !meta->doCompare)
@@ -39,7 +39,7 @@ int bubbleSortList(meta_t* meta, uint32_t nb){
         current = meta->structure;
         next = current->right;
 
-        while(next != right_ptr){
+        while(next != sentryRight){
             //if current element higher
             if((*meta->doCompare)(current->data, next->data) > 0)
             {
@@ -62,9 +62,9 @@ int bubbleSortList(meta_t* meta, uint32_t nb){
             next = current->right;
         }
         //set the sentry to the current element
-        right_ptr = current;
-        count ++;
-    }while(swapped && count < nb);
+        sentryRight = current;
+        remainingToSort--;
+    }while(swapped && remainingToSort);
 
     return 0;
 }
